@@ -1,5 +1,5 @@
 {
-  "name": "Real-Time Project 3",
+  "name": "RealTime_Project3",
   "version": "1.0.0",
   "description": "",
   "main": ",/server/app.js",
@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/PulpyPaul/SyncingData3.git"
+    "url": "git+https://github.com/PulpyPaul/Realtime_project3.git"
   },
   "author": "",
   "license": "ISC",
