@@ -1,102 +1,132 @@
 let canvas;
 let ctx;
-let socket;
-let hash;           // holds unique user ID
-let animationFrame;
+let w;
+let h;
+let world;
+let groundShape;
+let groundBody;
+let mouseConstraint; 
+let mouseBody;
 let circleShape;
 let circleBody;
-let boxShape1;
-let boxShape2;
-let boxShape3;
-let boxShape4;
-let boxBody1;
-let boxBody2;
-let boxBody3;
-let boxBody4;
-let world;
+let moveCircle;
 
 const init = () => {
+        
+    // Initialize canvas
+    canvas = document.getElementById("myCanvas");
+    w = canvas.width;
+    h = canvas.height;
+    ctx = canvas.getContext("2d");
+    ctx.lineWidth = 2;
     
-    // Get reference to necessary HTML elements
-    canvas = document.querySelector('#canvas');
-    ctx = canvas.getContext('2d');
-            
-    // Gets socket.io instance
-    socket = io.connect();
+    moveCircle = false;
     
-    world = new p2.World({
-        gravity: [0, 0]
-    });
+    // Initialize p2 simulation
+    world = new p2.World({ gravity:[0, 200]});
     
-    world.applyDamping = false;
-    //world.applySpringForces = false;
-    
-    circleShape = new p2.Circle({ radius: 20});
-    circleShape.sensor = true;
-    circleBody  = new p2.Body({ mass: 1, position:[canvas.width/2, canvas.height/2] });
+   // Add a circle
+    circleShape = new p2.Circle({ radius: 30 });
+    circleBody = new p2.Body({ mass: 1, position:[ 50, 50]});
     circleBody.addShape(circleShape);
     world.addBody(circleBody);
-    circleBody.velocity[0] = 200;
-    circleBody.velocity[1] = 0;
-       
-    boxShape1 = new p2.Box({ width: 10, height: canvas.height});
-    boxShape2 = new p2.Box({ width: 10, height: canvas.height});
-    boxShape3 = new p2.Box({ width: canvas.width/2, height: 10});
-    boxShape4 = new p2.Box({ width: canvas.width/2, height: 10});
+ 
+    // Add a plane
+    groundShape = new p2.Box({ width: w * 2, height: 10 });
+    groundBody = new p2.Body({ mass: 0, position:[0, h - 5]});
+    groundBody.addShape(groundShape);
+    world.addBody(groundBody);
     
-    boxBody1 = new p2.Body({ mass: 0, position:[canvas.width/4, 0]});
-    boxBody2 = new p2.Body({ mass: 0, position:[canvas.width/4 * 3, 0]});
-    boxBody3 = new p2.Body({ mass: 0, position:[canvas.width/4, 0]});
-    boxBody4 = new p2.Body({ mass: 0, position:[canvas.width/4, canvas.height - 10]});
+    // Create a body for the cursor
+    mouseBody = new p2.Body();
+    world.addBody(mouseBody);
     
-    boxBody1.sensor = true;
-    boxBody2.sensor = true;
-    boxBody3.sensor = true;
-    boxBody4.sensor = true;    
-    
-    boxBody1.addShape(boxShape1);
-    boxBody2.addShape(boxShape2);
-    boxBody3.addShape(boxShape3);
-    boxBody4.addShape(boxShape4);
-    
-    world.addBody(boxBody1);
-    world.addBody(boxBody2);
-    world.addBody(boxBody3);
-    world.addBody(boxBody4);
-    
-    world.on('beginContact', (e) => {
-        console.log("Contact");
-        if (e.bodyA == circleBody || e.bodyB == circleBody) {
-            if (e.bodyA == boxBody2 || e.bodyB == boxBody2 || e.bodyA == boxBody1 || e.bodyB == boxBody2){
-                circleBody.velocity[0] *= -1;
-            }
-            if (e.bodyA == boxBody3 || e.bodyB == boxBody3 || e.bodyA == boxBody4 || e.bodyB == boxBody4){
-                circleBody.velocity[1] *= -1;
-            }
+    canvas.addEventListener('mousedown', () => {
+        
+        moveCircle = true;
+        
+        // Convert the canvas coordinate to physics coordinates
+        var position = getPhysicsCoord(event);
+        
+        // Check if the cursor is inside the box
+        var hitBodies = world.hitTest(position, [circleBody]);
+        
+        if(hitBodies.length){
+            
+            // Move the mouse body to the cursor position
+            mouseBody.position[0] = position[0];
+            mouseBody.position[1] = position[1];
+            
+            mouseConstraint = new p2.RevoluteConstraint(mouseBody, circleBody, {
+              worldPivot: position,
+              collideConnected:false
+            });
+            world.addConstraint(mouseConstraint);
+        } else {
+            moveCircle = false;
         }
     });
+                            
+    //Sync the mouse body to be at the cursor position
+    canvas.addEventListener('mousemove', function(event){
+       var position = getPhysicsCoord(event);
+       mouseBody.position[0] = position[0];
+       mouseBody.position[1] = position[1];
+    });
+
+    // Remove the mouse constraint on mouse up
+    canvas.addEventListener('mouseup', function(event){
+        world.removeConstraint(mouseConstraint);
+        mouseConstraint = null;
+        moveCircle = false;
+    });
     
-    requestAnimationFrame(draw);
+    // Start Animating
+    animate();  // goes after init
 };
 
-const draw = () => {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-     
-    world.step(1/60);    
-     
+// Convert a canvas coordiante to physics coordinate
+const getPhysicsCoord = (mouseEvent) => {
+    var rect = canvas.getBoundingClientRect();
+    var x = mouseEvent.clientX - rect.left;
+    var y = mouseEvent.clientY - rect.top;
+    return [x, y];
+}
+
+const drawCircle = () => {
     ctx.beginPath();
-    let x = circleBody.position[0];
-    let y = circleBody.position[1];
-    let radius = circleShape.radius;
-    ctx.arc(x, y, radius, 0, 2 * Math.PI);
+    var x = circleBody.position[0],
+        y = circleBody.position[1],
+        radius = circleShape.radius;
+    ctx.arc(x,y,radius,0,2*Math.PI);
     ctx.stroke();
+}
+
+const drawGround = () => {
+    ctx.fillRect(groundBody.position[0], groundBody.position[1] - 5, groundShape.width, groundShape.height);
+}
+
+const render = () => {
+  
+  ctx.clearRect(0,0,w,h);
+
+  ctx.save();
     
-    ctx.fillRect(boxBody1.position[0], boxBody1.position[1], boxShape1.width, boxShape1.height);
-    ctx.fillRect(boxBody2.position[0], boxBody2.position[1], boxShape2.width, boxShape2.height);
-    ctx.fillRect(boxBody3.position[0], boxBody3.position[1], boxShape3.width, boxShape3.height);
-    ctx.fillRect(boxBody4.position[0], boxBody4.position[1], boxShape4.width, boxShape4.height);
+  // Draw all bodies
+  drawGround();
+  drawCircle();
     
-   animationFrame = requestAnimationFrame(draw);
-};
+  // Restore transform
+  ctx.restore();
+}
+
+// Animation loop
+const animate = () => {
+  requestAnimationFrame(animate);
+  // Move physics bodies forward in time
+  world.step(1/60);
+  // Render scene
+  render();
+}
 
 window.onload = init;
