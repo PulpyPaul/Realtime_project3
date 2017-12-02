@@ -41,7 +41,6 @@ const createWorld = () => {
   simulation.worldCicles = worldCircles;
   simulation.worldBoxes = worldBoxes;
   simulation.worldBodies = worldBodies;
-    
 };
 
 module.exports.createWorld = createWorld;

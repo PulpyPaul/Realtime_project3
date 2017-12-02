@@ -8,13 +8,13 @@ let io;
 // setup socket server
 const setupSockets = (ioInstance) => {
   io = ioInstance;
-      
+
   io.sockets.on('connection', (sock) => {
     const socket = sock;
 
     socket.join('room1');
-   
-    socket.emit('createWorld', 5);
+
+    socket.emit('createWorld', physics.simulation);
 
 
     socket.on('disconnect', () => {
