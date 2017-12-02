@@ -4,6 +4,7 @@ const p2 = require('p2');
 const express = require('express');
 const socketio = require('socket.io');
 const sockets = require('./socketServerEvents.js');
+const physics = require('./physics.js');
 
 const PORT = process.env.PORT || process.env.NODE_PORT || 3000;
 
@@ -17,6 +18,7 @@ app.get('/', (req, res) => {
 const server = http.createServer(app);
 const io = socketio(server);
 
+physics.createWorld();
 sockets.setupSockets(io);
 
 server.listen(PORT, (err) => {
@@ -25,3 +27,4 @@ server.listen(PORT, (err) => {
   }
   console.log(`Listening on port ${PORT}`);
 });
+

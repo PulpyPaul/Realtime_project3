@@ -10,6 +10,7 @@ let mouseBody;
 let circleShape;
 let circleBody;
 let moveCircle;
+let socket;
 
 const init = () => {
         
@@ -20,23 +21,12 @@ const init = () => {
     ctx = canvas.getContext("2d");
     ctx.lineWidth = 2;
     
+    socket = io.connect();
     moveCircle = false;
     
-    // Initialize p2 simulation
-    world = new p2.World({ gravity:[0, 200]});
     
-   // Add a circle
-    circleShape = new p2.Circle({ radius: 30 });
-    circleBody = new p2.Body({ mass: 1, position:[ 50, 50]});
-    circleBody.addShape(circleShape);
-    world.addBody(circleBody);
- 
-    // Add a plane
-    groundShape = new p2.Box({ width: w * 2, height: 10 });
-    groundBody = new p2.Body({ mass: 0, position:[0, h - 5]});
-    groundBody.addShape(groundShape);
-    world.addBody(groundBody);
-    
+    socket.on('createWorld', createWorld);
+    /*
     // Create a body for the cursor
     mouseBody = new p2.Body();
     world.addBody(mouseBody);
@@ -80,9 +70,10 @@ const init = () => {
         mouseConstraint = null;
         moveCircle = false;
     });
+    */
     
     // Start Animating
-    animate();  // goes after init
+    //animate();  // goes after init
 };
 
 // Convert a canvas coordiante to physics coordinate
