@@ -2,15 +2,14 @@ let canvas;
 let ctx;
 let w;
 let h;
-let world;
-let groundShape;
-let groundBody;
 let mouseConstraint; 
 let mouseBody;
-let circleShape;
-let circleBody;
 let moveCircle;
 let socket;
+
+// Objects that will be drawn to the canvas
+let boxes;
+let circles;
 
 const init = () => {
         
@@ -24,9 +23,27 @@ const init = () => {
     socket = io.connect();
     moveCircle = false;
     
+    socket.on('createBoxes', createBoxes);
+    socket.on('createCircles', createCircles);
+    socket.on('startDrawing', animate);
+    socket.on('updateBoxes', updateBoxes);
+    socket.on('updateCircles', updateCircles);
     
-    socket.on('createWorld', createWorld);
-    /*
+    canvas.onclick = socket.emit('startPhysics', 0);
+};
+
+// Convert a canvas coordiante to physics coordinate
+const getPhysicsCoord = (mouseEvent) => {
+    var rect = canvas.getBoundingClientRect();
+    var x = mouseEvent.clientX - rect.left;
+    var y = mouseEvent.clientY - rect.top;
+    return [x, y];
+}
+
+window.onload = init;
+
+
+/*
     // Create a body for the cursor
     mouseBody = new p2.Body();
     world.addBody(mouseBody);
@@ -74,50 +91,3 @@ const init = () => {
     
     // Start Animating
     //animate();  // goes after init
-};
-
-// Convert a canvas coordiante to physics coordinate
-const getPhysicsCoord = (mouseEvent) => {
-    var rect = canvas.getBoundingClientRect();
-    var x = mouseEvent.clientX - rect.left;
-    var y = mouseEvent.clientY - rect.top;
-    return [x, y];
-}
-
-const drawCircle = () => {
-    ctx.beginPath();
-    var x = circleBody.position[0],
-        y = circleBody.position[1],
-        radius = circleShape.radius;
-    ctx.arc(x,y,radius,0,2*Math.PI);
-    ctx.stroke();
-}
-
-const drawGround = () => {
-    ctx.fillRect(groundBody.position[0], groundBody.position[1] - 5, groundShape.width, groundShape.height);
-}
-
-const render = () => {
-  
-  ctx.clearRect(0,0,w,h);
-
-  ctx.save();
-    
-  // Draw all bodies
-  drawGround();
-  drawCircle();
-    
-  // Restore transform
-  ctx.restore();
-}
-
-// Animation loop
-const animate = () => {
-  requestAnimationFrame(animate);
-  // Move physics bodies forward in time
-  world.step(1/60);
-  // Render scene
-  render();
-}
-
-window.onload = init;

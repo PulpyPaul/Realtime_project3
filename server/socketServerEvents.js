@@ -1,5 +1,3 @@
-// Necessary for getting unique user ID
-const xxh = require('xxhashjs');
 const physics = require('./physics.js');
 
 // socket io instance
@@ -14,14 +12,25 @@ const setupSockets = (ioInstance) => {
 
     socket.join('room1');
 
-    socket.emit('createWorld', physics.simulation);
-
+    socket.emit('createBoxes', physics.boxDrawData);
+    socket.emit('createCircles', physics.circleDrawData);
 
     socket.on('disconnect', () => {
       socket.leave('room1');
     });
+      
+    socket.on('startPhysics', () => {
+        physics.startPhysics();
+        socket.emit('startDrawing', 0);
+    });
   });
 };
 
+const updateData = () => {
+    io.sockets.in('room1').emit('updateBoxes', physics.boxDrawData);
+    io.sockets.in('room1').emit('updateCircles', physics.circleDrawData);
+};
+
 module.exports.setupSockets = setupSockets;
+module.exports.updateData = updateData;
 
