@@ -11,23 +11,20 @@ const setupSockets = (ioInstance) => {
     const socket = sock;
 
     socket.join('room1');
-
-    socket.emit('createBoxes', physics.boxDrawData);
-    socket.emit('createCircles', physics.circleDrawData);
+      
+    socket.on('startUpdating', () => {
+       physics.updateClient();
+    });
 
     socket.on('disconnect', () => {
       socket.leave('room1');
     });
-      
-    socket.on('startPhysics', () => {
-        physics.startPhysics();
-        socket.emit('startDrawing', 0);
-    });
+  
+    
   });
 };
 
 const updateData = (boxData, circleData) => {
-    
     io.sockets.in('room1').emit('updateBoxes', boxData);
     io.sockets.in('room1').emit('updateCircles', circleData);
 };

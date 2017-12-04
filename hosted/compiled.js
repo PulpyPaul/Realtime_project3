@@ -57,13 +57,11 @@ var init = function init() {
     socket = io.connect();
     moveCircle = false;
 
-    socket.on('createBoxes', createBoxes);
-    socket.on('createCircles', createCircles);
     socket.on('startDrawing', animate);
     socket.on('updateBoxes', updateBoxes);
     socket.on('updateCircles', updateCircles);
 
-    socket.emit('startPhysics', 0);
+    socket.emit('startUpdating');
 };
 
 // Convert a canvas coordiante to physics coordinate
@@ -124,17 +122,10 @@ window.onload = init;
 
 // Start Animating
 //animate();  // goes after init
-'use strict';
-
-var createBoxes = function createBoxes(boxData) {
-    boxes = boxData;
-};
-
-var createCircles = function createCircles(circleData) {
-    circles = circleData;
-    socket.emit('startPhysics', 0);
-};
 "use strict";
+"use strict";
+
+var animating = false;
 
 // Animation loop
 var animate = function animate() {
@@ -150,4 +141,9 @@ var updateBoxes = function updateBoxes(boxData) {
 
 var updateCircles = function updateCircles(circleData) {
     circles = circleData;
+
+    if (!animating) {
+        animate();
+        animating = true;
+    }
 };

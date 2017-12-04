@@ -67,6 +67,11 @@ const getDrawData = () => {
 const startPhysics = () => {
     setInterval(() => {
         world.step(1/60);
+    }, 16);
+};
+
+const updateClient = () => {
+    setInterval(() => {
         getDrawData();
         sockets.updateData(boxDrawData, circleDrawData);
     }, 16);
@@ -74,7 +79,4 @@ const startPhysics = () => {
 
 module.exports.createWorld = createWorld;
 module.exports.startPhysics = startPhysics;
-module.exports.boxDrawData = boxDrawData;
-module.exports.circleDrawData = circleDrawData;
-
-
+module.exports.updateClient = updateClient;

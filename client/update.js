@@ -1,3 +1,5 @@
+let animating = false;
+
 // Animation loop
 const animate = () => {
   requestAnimationFrame(animate);
@@ -12,4 +14,9 @@ const updateBoxes = (boxData) => {
 
 const updateCircles = (circleData) => {
     circles = circleData;
+    
+    if (!animating){
+        animate();
+        animating = true;
+    }
 };

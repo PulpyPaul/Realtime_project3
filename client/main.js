@@ -23,13 +23,11 @@ const init = () => {
     socket = io.connect();
     moveCircle = false;
     
-    socket.on('createBoxes', createBoxes);
-    socket.on('createCircles', createCircles);
     socket.on('startDrawing', animate);
     socket.on('updateBoxes', updateBoxes);
     socket.on('updateCircles', updateCircles);
     
-   socket.emit('startPhysics', 0);
+    socket.emit('startUpdating');
 };
 
 // Convert a canvas coordiante to physics coordinate

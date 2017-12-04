@@ -19,6 +19,7 @@ const server = http.createServer(app);
 const io = socketio(server);
 
 physics.createWorld();
+physics.startPhysics();
 sockets.setupSockets(io);
 
 server.listen(PORT, (err) => {
