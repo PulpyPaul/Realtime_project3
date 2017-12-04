@@ -29,7 +29,7 @@ const init = () => {
     socket.on('updateBoxes', updateBoxes);
     socket.on('updateCircles', updateCircles);
     
-    canvas.onclick = socket.emit('startPhysics', 0);
+   socket.emit('startPhysics', 0);
 };
 
 // Convert a canvas coordiante to physics coordinate

@@ -32,14 +32,14 @@ const createWorld = () => {
     worldCircleBodies.push(circleBody);
     
     // Create the ground plane
-    groundShape = new p2.Box({ width: 600 * 2, height: 10 });
-    groundBody = new p2.Body({ mass: 0, position: [0, 800 - 5] });
+    groundShape = new p2.Box({ width: 600 * 2, height: 10,});
+    groundBody = new p2.Body({ mass: 0, position: [0, 800] });
     groundBody.addShape(groundShape);
     
     // Add the object to world and arrays
     world.addBody(groundBody);
     worldBoxes.push(groundShape);
-    worldBoxBodies.push(groundShape);
+    worldBoxBodies.push(groundBody);
     
     getDrawData();
 };
@@ -53,6 +53,7 @@ const getDrawData = () => {
     // Adds all boxes x/y and w/h data to the draw data array
     for (let i = 0; i < worldBoxes.length; i++){
         let boxData = { x: worldBoxBodies[i].position[0], y: worldBoxBodies[i].position[1], width: worldBoxes[i].width, height: worldBoxes[i].height};
+        console.dir(boxData);
         boxDrawData.push(boxData);
     }
     
@@ -68,7 +69,7 @@ const startPhysics = () => {
     setInterval(() => {
         world.step(1/60);
         getDrawData();
-        sockets.updateData();
+        sockets.updateData(boxDrawData, circleDrawData);
     }, 16);
 };
 

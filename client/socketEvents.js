@@ -4,4 +4,5 @@ const createBoxes = (boxData) => {
 
 const createCircles = (circleData) => {
     circles = circleData;
+    socket.emit('startPhysics', 0);
 };

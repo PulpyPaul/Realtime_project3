@@ -16,7 +16,7 @@ var render = function render() {
   ctx.clearRect(0, 0, w, h);
 
   // Save the canvas data
-  ctx.save();
+  //ctx.save();
 
   // Draw all data
   for (var i = 0; i < boxes.length; i++) {
@@ -28,7 +28,7 @@ var render = function render() {
   }
 
   // Restore transform
-  ctx.restore();
+  //ctx.restore();
 };
 "use strict";
 
@@ -63,7 +63,7 @@ var init = function init() {
     socket.on('updateBoxes', updateBoxes);
     socket.on('updateCircles', updateCircles);
 
-    canvas.onclick = socket.emit('startPhysics', 0);
+    socket.emit('startPhysics', 0);
 };
 
 // Convert a canvas coordiante to physics coordinate
@@ -124,7 +124,7 @@ window.onload = init;
 
 // Start Animating
 //animate();  // goes after init
-"use strict";
+'use strict';
 
 var createBoxes = function createBoxes(boxData) {
     boxes = boxData;
@@ -132,6 +132,7 @@ var createBoxes = function createBoxes(boxData) {
 
 var createCircles = function createCircles(circleData) {
     circles = circleData;
+    socket.emit('startPhysics', 0);
 };
 "use strict";
 

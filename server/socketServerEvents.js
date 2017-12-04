@@ -26,9 +26,10 @@ const setupSockets = (ioInstance) => {
   });
 };
 
-const updateData = () => {
-    io.sockets.in('room1').emit('updateBoxes', physics.boxDrawData);
-    io.sockets.in('room1').emit('updateCircles', physics.circleDrawData);
+const updateData = (boxData, circleData) => {
+    
+    io.sockets.in('room1').emit('updateBoxes', boxData);
+    io.sockets.in('room1').emit('updateCircles', circleData);
 };
 
 module.exports.setupSockets = setupSockets;

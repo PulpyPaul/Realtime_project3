@@ -5,7 +5,7 @@ const drawCircle = (circle) => {
 };
 
 const drawBox = (box) => {
-    ctx.fillRect(box.x, box.y - 5, box.width, box.height);
+    ctx.fillRect(box.x, box.y, box.width, box.height);
 };
 
 const render = () => {
@@ -14,7 +14,7 @@ const render = () => {
   ctx.clearRect(0,0,w,h);
 
   // Save the canvas data
-  ctx.save();
+  //ctx.save();
     
   // Draw all data
   for (let i = 0; i < boxes.length; i++){
@@ -26,5 +26,5 @@ const render = () => {
   }
     
   // Restore transform
-  ctx.restore();
+  //ctx.restore();
 };
