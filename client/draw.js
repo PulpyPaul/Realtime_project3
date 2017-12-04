@@ -13,9 +13,6 @@ const render = () => {
   // Clear the screen
   ctx.clearRect(0,0,w,h);
 
-  // Save the canvas data
-  //ctx.save();
-    
   // Draw all data
   for (let i = 0; i < boxes.length; i++){
       drawBox(boxes[i]);
@@ -24,7 +21,4 @@ const render = () => {
   for (let i = 0; i < circles.length; i++){
       drawCircle(circles[i]);
   }
-    
-  // Restore transform
-  //ctx.restore();
 };

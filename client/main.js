@@ -28,15 +28,13 @@ const init = () => {
     socket.on('updateCircles', updateCircles);
     
     socket.emit('startUpdating');
+    
+    canvas.addEventListener('mousedown', handleMouseDown);
+    canvas.addEventListener('mousemove', handleMouseMove);
+    canvas.addEventListener('mouseup',   handleMouseUp);
+    
+    document.addEventListener('keydown', handleKeyDown);
 };
-
-// Convert a canvas coordiante to physics coordinate
-const getPhysicsCoord = (mouseEvent) => {
-    var rect = canvas.getBoundingClientRect();
-    var x = mouseEvent.clientX - rect.left;
-    var y = mouseEvent.clientY - rect.top;
-    return [x, y];
-}
 
 window.onload = init;
 

@@ -11,22 +11,36 @@ const setupSockets = (ioInstance) => {
     const socket = sock;
 
     socket.join('room1');
-      
+
     socket.on('startUpdating', () => {
-       physics.updateClient();
+      physics.updateClient();
+    });
+
+    socket.on('resetCircle', () => {
+      physics.resetCircle();
+    });
+
+    socket.on('createConstraint', (data) => {
+      physics.createConstraint(data);
+    });
+
+    socket.on('updateMouse', (data) => {
+      physics.updateMouse(data);
+    });
+
+    socket.on('removeConstraint', () => {
+      physics.removeConstraint();
     });
 
     socket.on('disconnect', () => {
       socket.leave('room1');
     });
-  
-    
   });
 };
 
 const updateData = (boxData, circleData) => {
-    io.sockets.in('room1').emit('updateBoxes', boxData);
-    io.sockets.in('room1').emit('updateCircles', circleData);
+  io.sockets.in('room1').emit('updateBoxes', boxData);
+  io.sockets.in('room1').emit('updateCircles', circleData);
 };
 
 module.exports.setupSockets = setupSockets;

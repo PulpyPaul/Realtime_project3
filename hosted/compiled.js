@@ -1,34 +1,60 @@
 "use strict";
 
 var drawCircle = function drawCircle(circle) {
-  ctx.beginPath();
-  ctx.arc(circle.x, circle.y, circle.radius, 0, 2 * Math.PI);
-  ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(circle.x, circle.y, circle.radius, 0, 2 * Math.PI);
+    ctx.stroke();
 };
 
 var drawBox = function drawBox(box) {
-  ctx.fillRect(box.x, box.y - box.height / 2, box.width, box.height);
+    ctx.fillRect(box.x, box.y - box.height / 2, box.width, box.height);
 };
 
 var render = function render() {
 
-  // Clear the screen
-  ctx.clearRect(0, 0, w, h);
+    // Clear the screen
+    ctx.clearRect(0, 0, w, h);
 
-  // Save the canvas data
-  //ctx.save();
+    // Draw all data
+    for (var i = 0; i < boxes.length; i++) {
+        drawBox(boxes[i]);
+    }
 
-  // Draw all data
-  for (var i = 0; i < boxes.length; i++) {
-    drawBox(boxes[i]);
-  }
+    for (var _i = 0; _i < circles.length; _i++) {
+        drawCircle(circles[_i]);
+    }
+};
+'use strict';
 
-  for (var _i = 0; _i < circles.length; _i++) {
-    drawCircle(circles[_i]);
-  }
+var handleKeyDown = function handleKeyDown(e) {
+    var key = e.which;
 
-  // Restore transform
-  //ctx.restore();
+    // R press
+    if (key === 82) {
+        socket.emit('resetCircle');
+    }
+};
+
+var handleMouseDown = function handleMouseDown(e) {
+    var key = e.which;
+
+    // Left Click
+    if (key === 1) {
+        var position = getCanvasLocation(e);
+        socket.emit('createConstraint', position);
+    }
+
+    // Right click
+    if (key === 3) {}
+};
+
+var handleMouseMove = function handleMouseMove(e) {
+    var position = getCanvasLocation(e);
+    socket.emit('updateMouse', position);
+};
+
+var handleMouseUp = function handleMouseUp(e) {
+    socket.emit('removeConstraint');
 };
 "use strict";
 
@@ -62,14 +88,12 @@ var init = function init() {
     socket.on('updateCircles', updateCircles);
 
     socket.emit('startUpdating');
-};
 
-// Convert a canvas coordiante to physics coordinate
-var getPhysicsCoord = function getPhysicsCoord(mouseEvent) {
-    var rect = canvas.getBoundingClientRect();
-    var x = mouseEvent.clientX - rect.left;
-    var y = mouseEvent.clientY - rect.top;
-    return [x, y];
+    canvas.addEventListener('mousedown', handleMouseDown);
+    canvas.addEventListener('mousemove', handleMouseMove);
+    canvas.addEventListener('mouseup', handleMouseUp);
+
+    document.addEventListener('keydown', handleKeyDown);
 };
 
 window.onload = init;
@@ -146,4 +170,13 @@ var updateCircles = function updateCircles(circleData) {
         animate();
         animating = true;
     }
+};
+"use strict";
+
+// Convert a canvas coordiante to physics coordinate
+var getCanvasLocation = function getCanvasLocation(mouseEvent) {
+    var rect = canvas.getBoundingClientRect();
+    var x = mouseEvent.clientX - rect.left;
+    var y = mouseEvent.clientY - rect.top;
+    return [x, y];
 };
