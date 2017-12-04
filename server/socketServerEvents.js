@@ -1,5 +1,4 @@
-// Necessary for getting unique user ID
-const xxh = require('xxhashjs');
+const physics = require('./physics.js');
 
 // socket io instance
 let io;
@@ -13,10 +12,25 @@ const setupSockets = (ioInstance) => {
 
     socket.join('room1');
 
-    // taken from previous assignment, creates unique hash for user
-    const hash = xxh.h32(`${socket.id}${new Date().getTime()}`, 0xCAFEBABE).toString(16);
+    socket.on('startUpdating', () => {
+      physics.updateClient();
+    });
 
-    socket.hash = hash;
+    socket.on('resetCircle', () => {
+      physics.resetCircle();
+    });
+
+    socket.on('createConstraint', (data) => {
+      physics.createConstraint(data);
+    });
+
+    socket.on('updateMouse', (data) => {
+      physics.updateMouse(data);
+    });
+
+    socket.on('removeConstraint', () => {
+      physics.removeConstraint();
+    });
 
     socket.on('disconnect', () => {
       socket.leave('room1');
@@ -24,5 +38,11 @@ const setupSockets = (ioInstance) => {
   });
 };
 
+const updateData = (boxData, circleData) => {
+  io.sockets.in('room1').emit('updateBoxes', boxData);
+  io.sockets.in('room1').emit('updateCircles', circleData);
+};
+
 module.exports.setupSockets = setupSockets;
+module.exports.updateData = updateData;
 
