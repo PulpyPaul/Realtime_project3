@@ -7,7 +7,7 @@ var drawCircle = function drawCircle(circle) {
 };
 
 var drawBox = function drawBox(box) {
-    ctx.fillRect(box.x, box.y - box.height / 2, box.width, box.height);
+    ctx.fillRect(box.x - box.width / 2, box.y - box.height / 2, box.width, box.height);
 };
 
 var render = function render() {

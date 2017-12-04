@@ -13,9 +13,6 @@ const worldBoxBodies = [];
 let circleShape;
 let circleBody;
 
-let groundShape;
-let groundBody;
-
 let mouseBody;
 let mouseConstraint;
 
@@ -48,6 +45,37 @@ const getDrawData = () => {
   }
 };
 
+const createWalls = () => {
+  
+  let groundShape = new p2.Box({ width: 600 * 2, height: 10 });
+  let groundBody = new p2.Body({ mass: 0, position: [0, 805] });
+  groundBody.addShape(groundShape);
+  world.addBody(groundBody);
+  worldBoxes.push(groundShape);
+  worldBoxBodies.push(groundBody);
+
+  let leftWallShape = new p2.Box({ width: 10, height: 1600 });
+  let leftWallBody = new p2.Body({ mass: 0, position: [-5, 800]});
+  leftWallBody.addShape(leftWallShape);
+  world.addBody(leftWallBody);
+  worldBoxes.push(leftWallShape);
+  worldBoxBodies.push(leftWallBody);
+    
+  let rightWallShape = new p2.Box({ width: 10, height: 1600 });
+  let rightWallBody = new p2.Body({ mass: 0, position: [605, 800]});
+  rightWallBody.addShape(rightWallShape);
+  world.addBody(rightWallBody);
+  worldBoxes.push(rightWallShape);
+  worldBoxBodies.push(rightWallBody);
+    
+  let ceilingShape = new p2.Box({ width: 1200, height: 10});
+  let ceilingBody = new p2.Body({ mass: 0, position: [0, -5]});
+  ceilingBody.addShape(ceilingShape);
+  world.addBody(ceilingBody);
+  worldBoxes.push(ceilingShape);
+  worldBoxBodies.push(ceilingBody);
+};
+
 const createWorld = () => {
     // Initializes the p2 physics simulation
   world = new p2.World({ gravity: [0, 200] });
@@ -61,27 +89,20 @@ const createWorld = () => {
   world.addBody(circleBody);
   worldCircles.push(circleShape);
   worldCircleBodies.push(circleBody);
-
-    // Create the ground plane
-  groundShape = new p2.Box({ width: 600 * 2, height: 10 });
-  groundBody = new p2.Body({ mass: 0, position: [0, 800] });
-  groundBody.addShape(groundShape);
-
-    // Creates an empty body to hold the mouse
+    
+  createWalls();
+    
+  // Creates an empty body to hold the mouse
   mouseBody = new p2.Body;
   world.addBody(mouseBody);
-
-    // Add the object to world and arrays
-  world.addBody(groundBody);
-  worldBoxes.push(groundShape);
-  worldBoxBodies.push(groundBody);
 
   getDrawData();
 };
 
 const resetCircle = () => {
-  worldCircleBodies[0].position[0] = 200;
-  worldCircleBodies[0].position[1] = 0;
+  worldCircleBodies[0].position[0] = 300;
+  worldCircleBodies[0].position[1] = 400;
+  worldCircleBodies[0].velocity = [0, 0];
 };
 
 const startPhysics = () => {
