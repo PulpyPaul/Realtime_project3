@@ -53,7 +53,6 @@ const getDrawData = () => {
     // Adds all boxes x/y and w/h data to the draw data array
     for (let i = 0; i < worldBoxes.length; i++){
         let boxData = { x: worldBoxBodies[i].position[0], y: worldBoxBodies[i].position[1], width: worldBoxes[i].width, height: worldBoxes[i].height};
-        console.dir(boxData);
         boxDrawData.push(boxData);
     }
     

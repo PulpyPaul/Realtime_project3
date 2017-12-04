@@ -5,7 +5,7 @@ const drawCircle = (circle) => {
 };
 
 const drawBox = (box) => {
-    ctx.fillRect(box.x, box.y, box.width, box.height);
+    ctx.fillRect(box.x, box.y - box.height / 2, box.width, box.height);
 };
 
 const render = () => {
