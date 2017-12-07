@@ -73,80 +73,30 @@ var circles = void 0;
 
 var init = function init() {
 
-    // Initialize canvas
-    canvas = document.getElementById("myCanvas");
-    w = canvas.width;
-    h = canvas.height;
-    ctx = canvas.getContext("2d");
-    ctx.lineWidth = 2;
+        // Initialize canvas
+        canvas = document.getElementById("myCanvas");
+        w = canvas.width;
+        h = canvas.height;
+        ctx = canvas.getContext("2d");
+        ctx.lineWidth = 2;
 
-    socket = io.connect();
-    moveCircle = false;
+        socket = io.connect();
+        moveCircle = false;
 
-    socket.on('startDrawing', animate);
-    socket.on('updateBoxes', updateBoxes);
-    socket.on('updateCircles', updateCircles);
+        socket.on('startDrawing', animate);
+        socket.on('updateBoxes', updateBoxes);
+        socket.on('updateCircles', updateCircles);
 
-    socket.emit('startUpdating');
+        socket.emit('startUpdating');
 
-    canvas.addEventListener('mousedown', handleMouseDown);
-    canvas.addEventListener('mousemove', handleMouseMove);
-    canvas.addEventListener('mouseup', handleMouseUp);
+        canvas.addEventListener('mousedown', handleMouseDown);
+        canvas.addEventListener('mousemove', handleMouseMove);
+        canvas.addEventListener('mouseup', handleMouseUp);
 
-    document.addEventListener('keydown', handleKeyDown);
+        document.addEventListener('keydown', handleKeyDown);
 };
 
 window.onload = init;
-
-/*
-    // Create a body for the cursor
-    mouseBody = new p2.Body();
-    world.addBody(mouseBody);
-    
-    canvas.addEventListener('mousedown', () => {
-        
-        moveCircle = true;
-        
-        // Convert the canvas coordinate to physics coordinates
-        var position = getPhysicsCoord(event);
-        
-        // Check if the cursor is inside the box
-        var hitBodies = world.hitTest(position, [circleBody]);
-        
-        if(hitBodies.length){
-            
-            // Move the mouse body to the cursor position
-            mouseBody.position[0] = position[0];
-            mouseBody.position[1] = position[1];
-            
-            mouseConstraint = new p2.RevoluteConstraint(mouseBody, circleBody, {
-              worldPivot: position,
-              collideConnected:false
-            });
-            world.addConstraint(mouseConstraint);
-        } else {
-            moveCircle = false;
-        }
-    });
-                            
-    //Sync the mouse body to be at the cursor position
-    canvas.addEventListener('mousemove', function(event){
-       var position = getPhysicsCoord(event);
-       mouseBody.position[0] = position[0];
-       mouseBody.position[1] = position[1];
-    });
-
-    // Remove the mouse constraint on mouse up
-    canvas.addEventListener('mouseup', function(event){
-        world.removeConstraint(mouseConstraint);
-        mouseConstraint = null;
-        moveCircle = false;
-    });
-    */
-
-// Start Animating
-//animate();  // goes after init
-"use strict";
 "use strict";
 
 var animating = false;

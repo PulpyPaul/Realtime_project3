@@ -76,21 +76,59 @@ const createWalls = () => {
   worldBoxBodies.push(ceilingBody);
 };
 
+const createBucket = (x, y) => {
+  
+    let bucketLeft = new p2.Box({ width: 12, height: 100});
+    let bucketLeftBody = new p2.Body({ mass: 0, position: [x, y]});
+    bucketLeftBody.addShape(bucketLeft);
+    world.addBody(bucketLeftBody);
+    worldBoxes.push(bucketLeft);
+    worldBoxBodies.push(bucketLeftBody);
+    
+    let bucketBottom = new p2.Box({ width: 100, height: 12});
+    let bucketBottomBody = new p2.Body({ mass: 0, position: [x + 44, y + 50]});
+    bucketBottomBody.addShape(bucketBottom);
+    world.addBody(bucketBottomBody);
+    worldBoxes.push(bucketBottom);
+    worldBoxBodies.push(bucketBottomBody);
+    
+    let bucketRight = new p2.Box({ width: 12, height: 100});
+    let bucketRightBody = new p2.Body({ mass: 0, position: [x + 88, y]});
+    bucketRightBody.addShape(bucketRight);
+    world.addBody(bucketRightBody);
+    worldBoxes.push(bucketRight);
+    worldBoxBodies.push(bucketRightBody);
+    
+};
+
+const createBalls = (numBalls, numPlayers) => {
+    for(let i = 0; i < numBalls; i++)
+        {
+            // Create new circle shape and body
+            circleShape = new p2.Circle({ radius: 15 });
+            let randomX = Math.floor((Math.random() * 500) + 50);
+            let randomY = Math.floor((Math.random() * 300) + 450);
+            circleBody = new p2.Body({ mass: 1, position: [randomX, randomY] });
+            circleBody.addShape(circleShape);
+
+            // Add the object to the world and arrays
+            world.addBody(circleBody);
+            worldCircles.push(circleShape);
+            worldCircleBodies.push(circleBody);
+        }
+    
+};
+
 const createWorld = () => {
     // Initializes the p2 physics simulation
   world = new p2.World({ gravity: [0, 200] });
 
-    // Create new circle shape and body
-  circleShape = new p2.Circle({ radius: 30 });
-  circleBody = new p2.Body({ mass: 1, position: [50, 50] });
-  circleBody.addShape(circleShape);
-
-    // Add the object to the world and arrays
-  world.addBody(circleBody);
-  worldCircles.push(circleShape);
-  worldCircleBodies.push(circleBody);
+    createBalls(24, 1);
     
   createWalls();
+    
+    createBucket(50, 200);
+    createBucket(350, 400);
     
   // Creates an empty body to hold the mouse
   mouseBody = new p2.Body;
