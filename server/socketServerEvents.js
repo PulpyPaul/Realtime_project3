@@ -12,7 +12,6 @@ const setupSockets = (ioInstance) => {
     const socket = sock;
 
     socket.on('joinRoom', (roomName) => {
-      console.log(roomName);
       socket.join(roomName);
       players.push({
         id: socket.id,
@@ -39,7 +38,9 @@ const setupSockets = (ioInstance) => {
     });
 
     socket.on('removeConstraint', () => {
+/*
       physics.removeConstraint();
+*/
     });
 
     socket.on('disconnect', () => {
@@ -49,11 +50,13 @@ const setupSockets = (ioInstance) => {
 };
 
 const updateData = (boxData, circleData) => {
-  for (var i = 1; i < 5; i++)
+  /*for (var i = 1; i < 5; i++)
   {
     io.sockets.in("room" + i).emit('updateBoxes', boxData);
     io.sockets.in("room" + i).emit('updateCircles', circleData);
-  }
+  }*/
+  io.sockets.in("room" + 1).emit('updateBoxes', boxData);
+  io.sockets.in("room" + 1).emit('updateCircles', circleData);
 };
 
 const getMouse = () => {

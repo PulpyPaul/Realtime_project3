@@ -16,7 +16,6 @@ let roomName;
 const setupLobby = () => {
   canvas = document.getElementById("myCanvas");
 
-
   // add event that hides lobby buttons ans shows canvas
   document.getElementById("room1").addEventListener("click", () => {
     canvas.style.display = "block";
