@@ -31,48 +31,6 @@ var handleMouseMove = function handleMouseMove(e) {
 var handleMouseUp = function handleMouseUp(e) {
     socket.emit('removeConstraint');
 };
-"use strict";
-
-var canvas = void 0;
-var ctx = void 0;
-var w = void 0;
-var h = void 0;
-var mouseConstraint = void 0;
-var mouseBody = void 0;
-var moveCircle = void 0;
-var socket = void 0;
-
-// Objects that will be drawn to the canvas
-var boxes = void 0;
-var circles = void 0;
-
-var init = function init() {
-
-        // Initialize canvas
-        canvas = document.getElementById("myCanvas");
-        w = canvas.width;
-        h = canvas.height;
-        ctx = canvas.getContext("2d");
-        ctx.lineWidth = 2;
-
-        socket = io.connect();
-        moveCircle = false;
-
-        socket.on('startDrawing', animate);
-        socket.on('updateBoxes', updateBoxes);
-        socket.on('updateCircles', updateCircles);
-        socket.on('getMouse', updateMouse);
-
-        socket.emit('startUpdating');
-
-        canvas.addEventListener('mousedown', handleMouseDown);
-        canvas.addEventListener('mousemove', handleMouseMove);
-        canvas.addEventListener('mouseup', handleMouseUp);
-
-        document.addEventListener('keydown', handleKeyDown);
-};
-
-window.onload = init;
 'use strict';
 
 var animating = false;
@@ -138,4 +96,53 @@ var render = function render() {
     for (var _i = 0; _i < circles.length; _i++) {
         drawCircle(circles[_i]);
     }
+
+    ctx.beginPath();
+    ctx.moveTo(0, 575);
+    ctx.lineTo(600, 575);
+    ctx.strokeStyle = "black";
+    ctx.stroke();
 };
+"use strict";
+
+var canvas = void 0;
+var ctx = void 0;
+var w = void 0;
+var h = void 0;
+var mouseConstraint = void 0;
+var mouseBody = void 0;
+var moveCircle = void 0;
+var socket = void 0;
+
+// Objects that will be drawn to the canvas
+var boxes = void 0;
+var circles = void 0;
+
+var init = function init() {
+
+        // Initialize canvas
+        canvas = document.getElementById("myCanvas");
+        w = canvas.width;
+        h = canvas.height;
+        ctx = canvas.getContext("2d");
+        ctx.lineWidth = 2;
+
+        socket = io.connect();
+        moveCircle = false;
+
+        socket.on('startDrawing', animate);
+        socket.on('updateBoxes', updateBoxes);
+        socket.on('updateCircles', updateCircles);
+        socket.on('getMouse', updateMouse);
+
+        socket.emit('startUpdating');
+
+        canvas.addEventListener('mousedown', handleMouseDown);
+        canvas.addEventListener('mousemove', handleMouseMove);
+        canvas.addEventListener('mouseup', handleMouseUp);
+        canvas.addEventListener('mouseout', handleMouseUp);
+
+        document.addEventListener('keydown', handleKeyDown);
+};
+
+window.onload = init;

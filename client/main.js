@@ -33,6 +33,7 @@ const init = () => {
     canvas.addEventListener('mousedown', handleMouseDown);
     canvas.addEventListener('mousemove', handleMouseMove);
     canvas.addEventListener('mouseup',   handleMouseUp);
+    canvas.addEventListener('mouseout', handleMouseUp);
     
     document.addEventListener('keydown', handleKeyDown);
 };
