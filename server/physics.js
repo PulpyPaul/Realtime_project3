@@ -13,6 +13,7 @@ const worldSensors = [];
 const worldSensorBodies = [];
 const circleColors = [];
 const numOfBalls = 24;
+const maxVelocity = 500;
 
 const colors = ["blue", "red", "green", "yellow"];
 
@@ -21,6 +22,11 @@ let circleBody;
 
 let mouseBody;
 let mouseConstraint;
+
+let redCount = 0;
+let blueCount = 0;
+let greenCount = 0;
+let yellowCount = 0;
 
 const getDrawData = () => {
     // Clear the array
@@ -127,7 +133,7 @@ const createBalls = (numBalls, numPlayers) => {
                     circleShape = new p2.Circle({ radius: 15 });
                     circleColors[circleShape.id] = colors[i%4];
                     let randomX = Math.floor((Math.random() * 500) + 50);
-                    let randomY = Math.floor((Math.random() * 300) + 450);
+                    let randomY = Math.floor((Math.random() * 200) + 550);
                     circleBody = new p2.Body({ mass: 1, position: [randomX, randomY] });
                     circleBody.addShape(circleShape);
 
@@ -148,8 +154,8 @@ const createWorld = () => {
     
   createWalls();
     
-    createBucket(50, 200);
-    createBucket(350, 400);
+    createBucket(Math.floor((Math.random() * 100) + 50), Math.floor((Math.random() * 150) + 250));
+    createBucket(Math.floor((Math.random() * 100) + 350), Math.floor((Math.random() * 150) + 250));
     
   // Creates an empty body to hold the mouse
   mouseBody = new p2.Body;
@@ -165,10 +171,32 @@ const createWorld = () => {
                         let s = worldSensorBodies[j];
                         if((event.bodyA == c || event.bodyB == c) && (event.bodyA == s || event.bodyB == s))
                         {
+                            if(worldCircles[i].sensor != true) 
+                            {
                             //handle ball in bucket event
                             console.log("collision");
                             worldCircles[i].radius = 0;
                             worldCircles[i].sensor = true;
+                            switch(circleColors[worldCircles[i].id]) {
+                                case "blue":
+                                    blueCount++;
+                                    console.log("Blue: " + blueCount);
+                                    break;
+                                case "red":
+                                    redCount++;
+                                    console.log("Red: " + redCount);
+                                    break;
+                                case "green":
+                                    greenCount++;
+                                    console.log("Green: " + greenCount);
+                                    break;
+                                case "yellow":
+                                    yellowCount++;
+                                    console.log("Yellow: " + yellowCount);
+                                    break;
+                                    
+                            }
+                            }
                         }
                    }
            }
@@ -188,8 +216,29 @@ const resetCircle = () => {
     }
 };
 
+const clampVelocity = () => {
+    for(let i = 0; i < worldCircleBodies.length; i++)
+    {
+        let angle;
+        let vx = worldCircleBodies[i].velocity[0];
+        let vy = worldCircleBodies[i].velocity[1];
+        let currentVelocity = vx * vx + vy * vy;
+        if( currentVelocity > maxVelocity * maxVelocity)
+            {
+                angle = Math.atan2(vy, vx);
+                
+                vx = Math.cos(angle) * maxVelocity;
+                vy = Math.sin(angle) * maxVelocity; 
+                
+                worldCircleBodies[i].velocity[0] = vx;
+                worldCircleBodies[i].velocity[1] = vy;
+            }
+    }
+};
+
 const startPhysics = () => {
   setInterval(() => {
+    clampVelocity();
     world.step(1 / 60);
   }, 16);
 };
@@ -203,6 +252,7 @@ const updateClient = () => {
 };
 
 const updateMouse = (position) => {
+    if(position[1] < 575) position[1] = 575;
   mouseBody.position[0] = position[0];
   mouseBody.position[1] = position[1];
 };
