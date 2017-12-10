@@ -1,3 +1,5 @@
+let mousePosition = [];
+
 const handleKeyDown = (e) => {
     let key = e.which;
     
@@ -23,8 +25,7 @@ const handleMouseDown = (e) => {
 };
 
 const handleMouseMove = (e) => {
-    let position = getCanvasLocation(e);
-    socket.emit('updateMouse', position);
+    mousePosition = getCanvasLocation(e);
 };
 
 const handleMouseUp = (e) => {

@@ -29,6 +29,8 @@ var render = function render() {
 };
 'use strict';
 
+var mousePosition = [];
+
 var handleKeyDown = function handleKeyDown(e) {
     var key = e.which;
 
@@ -52,8 +54,7 @@ var handleMouseDown = function handleMouseDown(e) {
 };
 
 var handleMouseMove = function handleMouseMove(e) {
-    var position = getCanvasLocation(e);
-    socket.emit('updateMouse', position);
+    mousePosition = getCanvasLocation(e);
 };
 
 var handleMouseUp = function handleMouseUp(e) {
@@ -89,6 +90,7 @@ var init = function init() {
         socket.on('startDrawing', animate);
         socket.on('updateBoxes', updateBoxes);
         socket.on('updateCircles', updateCircles);
+        socket.on('getMouse', updateMouse);
 
         socket.emit('startUpdating');
 
@@ -100,7 +102,7 @@ var init = function init() {
 };
 
 window.onload = init;
-"use strict";
+'use strict';
 
 var animating = false;
 
@@ -123,6 +125,10 @@ var updateCircles = function updateCircles(circleData) {
         animate();
         animating = true;
     }
+};
+
+var updateMouse = function updateMouse() {
+    socket.emit('updateMouse', mousePosition);
 };
 "use strict";
 
