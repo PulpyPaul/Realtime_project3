@@ -2,15 +2,19 @@
 
 var drawCircle = function drawCircle(circle) {
     ctx.beginPath();
-    ctx.fillStyle = circle.color;
+    ctx.strokeStyle = "black";
     ctx.arc(circle.x, circle.y, circle.radius, 0, 2 * Math.PI);
-    ctx.fill();
     ctx.stroke();
 };
 
 var drawBox = function drawBox(box) {
     ctx.fillStyle = "black";
     ctx.fillRect(box.x - box.width / 2, box.y - box.height / 2, box.width, box.height);
+};
+
+var drawBucket = function drawBucket(bucket) {
+    ctx.fillStyle = bucket.color;
+    ctx.fillRect(bucket.x - bucket.width / 2, bucket.y - bucket.height / 2, bucket.width, bucket.height);
 };
 
 var render = function render() {
@@ -23,13 +27,17 @@ var render = function render() {
         drawBox(boxes[i]);
     }
 
-    for (var _i = 0; _i < circles.length; _i++) {
-        drawCircle(circles[_i]);
+    for (var _i = 0; _i < buckets.length; _i++) {
+        drawBucket(buckets[_i]);
+    }
+
+    for (var _i2 = 0; _i2 < circles.length; _i2++) {
+        drawCircle(circles[_i2]);
     }
 
     ctx.beginPath();
     ctx.moveTo(0, 575);
-    ctx.lineTo(600, 575);
+    ctx.lineTo(900, 575);
     ctx.strokeStyle = "black";
     ctx.stroke();
 };
@@ -79,6 +87,7 @@ var socket = void 0;
 
 // Objects that will be drawn to the canvas
 var boxes = void 0;
+var buckets = void 0;
 var circles = void 0;
 var roomName = void 0;
 
@@ -111,6 +120,10 @@ var setupLobby = function setupLobby() {
   });
 };
 
+var updateColor = function updateColor(color) {
+  document.getElementById("playercolor").innerHTML = color;
+};
+
 var init = function init() {
   document.getElementById("buttons").style.display = "none";
   // Initialize canvas
@@ -126,7 +139,9 @@ var init = function init() {
   socket.on('startDrawing', animate);
   socket.on('updateBoxes', updateBoxes);
   socket.on('updateCircles', updateCircles);
+  socket.on('updateBuckets', updateBuckets);
   socket.on('getMouse', updateMouse);
+  socket.on('playerColor', updateColor);
 
   socket.emit('startUpdating');
 
@@ -149,6 +164,10 @@ var animate = function animate() {
 
     // Render scene
     render();
+};
+
+var updateBuckets = function updateBuckets(bucketData) {
+    buckets = bucketData;
 };
 
 var updateBoxes = function updateBoxes(boxData) {

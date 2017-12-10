@@ -9,6 +9,7 @@ let socket;
  
 // Objects that will be drawn to the canvas
 let boxes;
+let buckets;
 let circles;
 let roomName;
 
@@ -43,6 +44,10 @@ const setupLobby = () => {
   });
 };
 
+const updateColor = (color) => {
+    document.getElementById("playercolor").innerHTML = color;
+}
+
 const init = () => {
   document.getElementById("buttons").style.display = "none";
   // Initialize canvas
@@ -58,7 +63,9 @@ const init = () => {
   socket.on('startDrawing', animate);
   socket.on('updateBoxes', updateBoxes);
   socket.on('updateCircles', updateCircles);
+  socket.on('updateBuckets', updateBuckets);
   socket.on('getMouse', updateMouse);
+  socket.on('playerColor', updateColor);
 
   socket.emit('startUpdating');
 

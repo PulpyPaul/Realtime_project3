@@ -3,6 +3,7 @@ const sockets = require('./socketServerEvents.js');
 
 let boxDrawData = [];
 let circleDrawData = [];
+let bucketDrawData = [];
 
 let world;
 const worldCircles = [];
@@ -14,6 +15,8 @@ const worldSensorBodies = [];
 const circleColors = [];
 const numOfBalls = 24;
 const maxVelocity = 500;
+const worldBuckets = [];
+const worldBucketBodies = [];
 
 const colors = ["blue", "red", "green", "yellow"];
 
@@ -32,6 +35,7 @@ const getDrawData = () => {
     // Clear the array
   boxDrawData = [];
   circleDrawData = [];
+  bucketDrawData = [];
 
     // Adds all boxes x/y and w/h data to the draw data array
   for (let i = 0; i < worldBoxes.length; i++) {
@@ -44,6 +48,26 @@ const getDrawData = () => {
 
     boxDrawData.push(boxData);
   }
+    
+    // Adds all buckets x/y and w/h data to the draw data array
+        let bucketCount = 0;
+        let colorVal = 0;
+  for (let i = 0; i < worldBuckets.length; i++) {
+        const bucketData = {
+        x: worldBucketBodies[i].position[0],
+        y: worldBucketBodies[i].position[1],
+        width: worldBuckets[i].width,
+        height: worldBuckets[i].height,
+        color: colors[colorVal],
+        };
+        bucketCount++;
+        if(bucketCount > 2) 
+        {
+            bucketCount = 0;
+            colorVal++;
+        }
+        bucketDrawData.push(bucketData);
+  }
 
     // Adds all circle x/y and r data to the draw data array
   for (let i = 0; i < worldCircles.length; i++) {
@@ -51,7 +75,7 @@ const getDrawData = () => {
       x: worldCircleBodies[i].position[0],
       y: worldCircleBodies[i].position[1],
       radius: worldCircles[i].radius,
-      color: circleColors[worldCircles[i].id],
+      //color: circleColors[worldCircles[i].id],
     };
 
     circleDrawData.push(circleData);
@@ -60,7 +84,7 @@ const getDrawData = () => {
 
 const createWalls = () => {
   
-  let groundShape = new p2.Box({ width: 600 * 2, height: 10 });
+  let groundShape = new p2.Box({ width: 1800, height: 10 });
   let groundBody = new p2.Body({ mass: 0, position: [0, 805] });
   groundBody.addShape(groundShape);
   world.addBody(groundBody);
@@ -75,13 +99,13 @@ const createWalls = () => {
   worldBoxBodies.push(leftWallBody);
     
   let rightWallShape = new p2.Box({ width: 10, height: 1600 });
-  let rightWallBody = new p2.Body({ mass: 0, position: [605, 800]});
+  let rightWallBody = new p2.Body({ mass: 0, position: [905, 800]});
   rightWallBody.addShape(rightWallShape);
   world.addBody(rightWallBody);
   worldBoxes.push(rightWallShape);
   worldBoxBodies.push(rightWallBody);
     
-  let ceilingShape = new p2.Box({ width: 1200, height: 10});
+  let ceilingShape = new p2.Box({ width: 1800, height: 10});
   let ceilingBody = new p2.Body({ mass: 0, position: [0, -5]});
   ceilingBody.addShape(ceilingShape);
   world.addBody(ceilingBody);
@@ -96,22 +120,22 @@ const createBucket = (x, y) => {
     let bucketLeftBody = new p2.Body({ mass: 0, position: [x, y]});
     bucketLeftBody.addShape(bucketLeft);
     world.addBody(bucketLeftBody);
-    worldBoxes.push(bucketLeft);
-    worldBoxBodies.push(bucketLeftBody);
+    worldBuckets.push(bucketLeft);
+    worldBucketBodies.push(bucketLeftBody);
     
     let bucketBottom = new p2.Box({ width: 100, height: 12});
     let bucketBottomBody = new p2.Body({ mass: 0, position: [x + 44, y + 50]});
     bucketBottomBody.addShape(bucketBottom);
     world.addBody(bucketBottomBody);
-    worldBoxes.push(bucketBottom);
-    worldBoxBodies.push(bucketBottomBody);
+    worldBuckets.push(bucketBottom);
+    worldBucketBodies.push(bucketBottomBody);
     
     let bucketRight = new p2.Box({ width: 12, height: 100});
     let bucketRightBody = new p2.Body({ mass: 0, position: [x + 88, y]});
     bucketRightBody.addShape(bucketRight);
     world.addBody(bucketRightBody);
-    worldBoxes.push(bucketRight);
-    worldBoxBodies.push(bucketRightBody);
+    worldBuckets.push(bucketRight);
+    worldBucketBodies.push(bucketRightBody);
     
     //creates sensor in bucket to check is balls are in bucket
     let bucketSensor = new p2.Box({ width: 70, height: 10});
@@ -125,14 +149,12 @@ const createBucket = (x, y) => {
 };
 
 const createBalls = (numBalls, numPlayers) => {
-    for(let i = 0; i < 4; i++)
-        {
-            for(let j = 0; j < (numBalls/4); j++)
+            for(let i = 0; i < (numBalls); i++)
                 {
                     // Create new circle shape and body
                     circleShape = new p2.Circle({ radius: 15 });
-                    circleColors[circleShape.id] = colors[i%4];
-                    let randomX = Math.floor((Math.random() * 500) + 50);
+                    //circleColors[circleShape.id] = colors[i%numPlayers];
+                    let randomX = Math.floor((Math.random() * 800) + 50);
                     let randomY = Math.floor((Math.random() * 200) + 550);
                     circleBody = new p2.Body({ mass: 1, position: [randomX, randomY] });
                     circleBody.addShape(circleShape);
@@ -142,8 +164,6 @@ const createBalls = (numBalls, numPlayers) => {
                     worldCircles.push(circleShape);
                     worldCircleBodies.push(circleBody);
                 } 
-        }
-    
 };
 
 const createWorld = () => {
@@ -155,7 +175,9 @@ const createWorld = () => {
   createWalls();
     
     createBucket(Math.floor((Math.random() * 100) + 50), Math.floor((Math.random() * 150) + 250));
-    createBucket(Math.floor((Math.random() * 100) + 350), Math.floor((Math.random() * 150) + 250));
+    createBucket(Math.floor((Math.random() * 100) + 250), Math.floor((Math.random() * 150) + 250));
+    createBucket(Math.floor((Math.random() * 100) + 450), Math.floor((Math.random() * 150) + 250));
+    createBucket(Math.floor((Math.random() * 100) + 650), Math.floor((Math.random() * 150) + 250));
     
   // Creates an empty body to hold the mouse
   mouseBody = new p2.Body;
@@ -174,10 +196,9 @@ const createWorld = () => {
                             if(worldCircles[i].sensor != true) 
                             {
                             //handle ball in bucket event
-                            console.log("collision");
                             worldCircles[i].radius = 0;
                             worldCircles[i].sensor = true;
-                            switch(circleColors[worldCircles[i].id]) {
+                            /*switch(circleColors[worldCircles[i].id]) {
                                 case "blue":
                                     blueCount++;
                                     console.log("Blue: " + blueCount);
@@ -195,7 +216,7 @@ const createWorld = () => {
                                     console.log("Yellow: " + yellowCount);
                                     break;
                                     
-                            }
+                            }*/
                             }
                         }
                    }
@@ -246,31 +267,31 @@ const startPhysics = () => {
 const updateClient = () => {
   setInterval(() => {
     getDrawData();
-    sockets.updateData(boxDrawData, circleDrawData);
+    sockets.updateData(boxDrawData, circleDrawData, bucketDrawData);
     sockets.getMouse();    
   }, 16);
 };
 
 const updateMouse = (position) => {
-    if(position[1] < 575) position[1] = 575;
+    if(position[1] < 575) removeConstraint();
   mouseBody.position[0] = position[0];
   mouseBody.position[1] = position[1];
 };
 
-const createConstraint = (position) => {
+const createConstraint = (position, id) => {
   const hitObjects = world.hitTest(position, worldCircleBodies);
 
   if (hitObjects.length) {
     mouseBody.position[0] = position[0];
     mouseBody.position[1] = position[1];
+        mouseConstraint = new p2.RevoluteConstraint(mouseBody, hitObjects[0], {
+        worldPivot: position,
+        collideConnected: false,
+        });
 
-    mouseConstraint = new p2.RevoluteConstraint(mouseBody, hitObjects[0], {
-      worldPivot: position,
-      collideConnected: false,
-    });
-
-    world.addConstraint(mouseConstraint);
-  } else {
+        world.addConstraint(mouseConstraint);
+  }
+    else {
     return;
   }
 };

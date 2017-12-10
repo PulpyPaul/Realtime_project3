@@ -8,6 +8,10 @@ const animate = () => {
   render();
 };
 
+const updateBuckets = (bucketData) => {
+  buckets = bucketData;  
+};
+
 const updateBoxes = (boxData) => {
     boxes = boxData;
 };
