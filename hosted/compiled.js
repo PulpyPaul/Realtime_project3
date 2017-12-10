@@ -27,6 +27,15 @@ var render = function render() {
         drawCircle(circles[_i]);
     }
 };
+"use strict";
+
+// Convert a canvas coordiante to physics coordinate
+var getCanvasLocation = function getCanvasLocation(mouseEvent) {
+    var rect = canvas.getBoundingClientRect();
+    var x = mouseEvent.clientX - rect.left;
+    var y = mouseEvent.clientY - rect.top;
+    return [x, y];
+};
 'use strict';
 
 var mousePosition = [];
@@ -129,13 +138,4 @@ var updateCircles = function updateCircles(circleData) {
 
 var updateMouse = function updateMouse() {
     socket.emit('updateMouse', mousePosition);
-};
-"use strict";
-
-// Convert a canvas coordiante to physics coordinate
-var getCanvasLocation = function getCanvasLocation(mouseEvent) {
-    var rect = canvas.getBoundingClientRect();
-    var x = mouseEvent.clientX - rect.left;
-    var y = mouseEvent.clientY - rect.top;
-    return [x, y];
 };
