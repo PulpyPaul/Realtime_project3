@@ -9,6 +9,12 @@ const worldCircles = [];
 const worldBoxes = [];
 const worldCircleBodies = [];
 const worldBoxBodies = [];
+const worldSensors = [];
+const worldSensorBodies = [];
+const circleColors = [];
+const numOfBalls = 24;
+
+const colors = ["blue", "red", "green", "yellow"];
 
 let circleShape;
 let circleBody;
@@ -39,6 +45,7 @@ const getDrawData = () => {
       x: worldCircleBodies[i].position[0],
       y: worldCircleBodies[i].position[1],
       radius: worldCircles[i].radius,
+      color: circleColors[worldCircles[i].id],
     };
 
     circleDrawData.push(circleData);
@@ -78,6 +85,7 @@ const createWalls = () => {
 
 const createBucket = (x, y) => {
   
+    //creates walls of bucket
     let bucketLeft = new p2.Box({ width: 12, height: 100});
     let bucketLeftBody = new p2.Body({ mass: 0, position: [x, y]});
     bucketLeftBody.addShape(bucketLeft);
@@ -99,22 +107,35 @@ const createBucket = (x, y) => {
     worldBoxes.push(bucketRight);
     worldBoxBodies.push(bucketRightBody);
     
+    //creates sensor in bucket to check is balls are in bucket
+    let bucketSensor = new p2.Box({ width: 70, height: 10});
+    bucketSensor.sensor = true;
+    let bucketSensorBody = new p2.Body({ mass: 0, position: [x + 44, y + 45]});
+    bucketSensorBody.addShape(bucketSensor);
+    world.addBody(bucketSensorBody);
+    worldSensors.push(bucketSensor);
+    worldSensorBodies.push(bucketSensorBody);
+    
 };
 
 const createBalls = (numBalls, numPlayers) => {
-    for(let i = 0; i < numBalls; i++)
+    for(let i = 0; i < 4; i++)
         {
-            // Create new circle shape and body
-            circleShape = new p2.Circle({ radius: 15 });
-            let randomX = Math.floor((Math.random() * 500) + 50);
-            let randomY = Math.floor((Math.random() * 300) + 450);
-            circleBody = new p2.Body({ mass: 1, position: [randomX, randomY] });
-            circleBody.addShape(circleShape);
+            for(let j = 0; j < (numBalls/4); j++)
+                {
+                    // Create new circle shape and body
+                    circleShape = new p2.Circle({ radius: 15 });
+                    circleColors[circleShape.id] = colors[i%4];
+                    let randomX = Math.floor((Math.random() * 500) + 50);
+                    let randomY = Math.floor((Math.random() * 300) + 450);
+                    circleBody = new p2.Body({ mass: 1, position: [randomX, randomY] });
+                    circleBody.addShape(circleShape);
 
-            // Add the object to the world and arrays
-            world.addBody(circleBody);
-            worldCircles.push(circleShape);
-            worldCircleBodies.push(circleBody);
+                    // Add the object to the world and arrays
+                    world.addBody(circleBody);
+                    worldCircles.push(circleShape);
+                    worldCircleBodies.push(circleBody);
+                } 
         }
     
 };
@@ -123,7 +144,7 @@ const createWorld = () => {
     // Initializes the p2 physics simulation
   world = new p2.World({ gravity: [0, 200] });
 
-    createBalls(24, 1);
+    createBalls(numOfBalls, 4);
     
   createWalls();
     
@@ -133,14 +154,38 @@ const createWorld = () => {
   // Creates an empty body to hold the mouse
   mouseBody = new p2.Body;
   world.addBody(mouseBody);
+    
+    //check if ball is in bucket
+    world.on("beginContact", (event) =>{
+       for(let i = 0; i < worldCircleBodies.length; i++)
+           {
+               for(let j = 0; j < worldSensorBodies.length; j++)
+                   {
+                        let c = worldCircleBodies[i];
+                        let s = worldSensorBodies[j];
+                        if((event.bodyA == c || event.bodyB == c) && (event.bodyA == s || event.bodyB == s))
+                        {
+                            //handle ball in bucket event
+                            console.log("collision");
+                            worldCircles[i].radius = 0;
+                            worldCircles[i].sensor = true;
+                        }
+                   }
+           }
+    });
 
   getDrawData();
 };
 
 const resetCircle = () => {
-  worldCircleBodies[0].position[0] = 300;
-  worldCircleBodies[0].position[1] = 400;
-  worldCircleBodies[0].velocity = [0, 0];
+    for(let i = 0; i < worldCircleBodies.length; i++)
+    {
+        let randomX = Math.floor((Math.random() * 500) + 50);
+        let randomY = Math.floor((Math.random() * 300) + 450);
+        worldCircleBodies[i].position[0] = randomX;
+        worldCircleBodies[i].position[1] = randomY;
+        worldCircleBodies[i].velocity = [0, 0];
+    }
 };
 
 const startPhysics = () => {
@@ -168,7 +213,7 @@ const createConstraint = (position) => {
     mouseBody.position[0] = position[0];
     mouseBody.position[1] = position[1];
 
-    mouseConstraint = new p2.RevoluteConstraint(mouseBody, worldCircleBodies[0], {
+    mouseConstraint = new p2.RevoluteConstraint(mouseBody, hitObjects[0], {
       worldPivot: position,
       collideConnected: false,
     });
