@@ -43,6 +43,10 @@ const updateData = (boxData, circleData) => {
   io.sockets.in('room1').emit('updateCircles', circleData);
 };
 
+const getMouse = () => {
+ io.sockets.in('room1').emit('getMouse');    
+};
+
 module.exports.setupSockets = setupSockets;
 module.exports.updateData = updateData;
-
+module.exports.getMouse = getMouse;

@@ -26,6 +26,7 @@ const init = () => {
     socket.on('startDrawing', animate);
     socket.on('updateBoxes', updateBoxes);
     socket.on('updateCircles', updateCircles);
+    socket.on('getMouse', updateMouse);
     
     socket.emit('startUpdating');
     

@@ -153,6 +153,7 @@ const updateClient = () => {
   setInterval(() => {
     getDrawData();
     sockets.updateData(boxDrawData, circleDrawData);
+    sockets.getMouse();    
   }, 16);
 };
 

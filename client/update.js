@@ -20,3 +20,7 @@ const updateCircles = (circleData) => {
         animating = true;
     }
 };
+
+const updateMouse = () => {
+    socket.emit('updateMouse', mousePosition);
+};
