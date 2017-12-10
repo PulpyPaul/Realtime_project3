@@ -1,0 +1,23 @@
+canvas {
+  border: 1px black solid;
+  display: none;
+}
+
+#header {
+  text-align: center;
+  margin: auto;
+  display: block;
+  color: white;
+  margin-top: 5px;
+}
+
+.developers {
+  margin: auto;
+  display: block;
+  padding: 10px;
+  padding-left: 20px;
+}
+
+#lobby {
+  display: block;
+}

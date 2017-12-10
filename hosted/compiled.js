@@ -26,6 +26,12 @@ var render = function render() {
     for (var _i = 0; _i < circles.length; _i++) {
         drawCircle(circles[_i]);
     }
+
+    ctx.beginPath();
+    ctx.moveTo(0, 575);
+    ctx.lineTo(600, 575);
+    ctx.strokeStyle = "black";
+    ctx.stroke();
 };
 'use strict';
 
@@ -112,7 +118,6 @@ var setupLobby = function setupLobby() {
 };
 
 var init = function init() {
-
   // Initialize canvas
   w = canvas.width;
   h = canvas.height;
@@ -133,6 +138,7 @@ var init = function init() {
   canvas.addEventListener('mousedown', handleMouseDown);
   canvas.addEventListener('mousemove', handleMouseMove);
   canvas.addEventListener('mouseup', handleMouseUp);
+  canvas.addEventListener('mouseout', handleMouseUp);
 
   document.addEventListener('keydown', handleKeyDown);
 };

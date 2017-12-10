@@ -24,4 +24,10 @@ const render = () => {
   for (let i = 0; i < circles.length; i++){
       drawCircle(circles[i]);
   }
+    
+    ctx.beginPath();
+    ctx.moveTo(0, 575);
+    ctx.lineTo(600, 575);
+    ctx.strokeStyle = "black";
+    ctx.stroke();
 };

@@ -50,7 +50,6 @@ const setupLobby = () => {
 };
 
 const init = () => {
-
   // Initialize canvas
   w = canvas.width;
   h = canvas.height;
@@ -71,8 +70,10 @@ const init = () => {
   canvas.addEventListener('mousedown', handleMouseDown);
   canvas.addEventListener('mousemove', handleMouseMove);
   canvas.addEventListener('mouseup',   handleMouseUp);
+  canvas.addEventListener('mouseout', handleMouseUp);
 
   document.addEventListener('keydown', handleKeyDown);
+  
 };
 
 window.onload = setupLobby;
