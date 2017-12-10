@@ -2,11 +2,14 @@
 
 var drawCircle = function drawCircle(circle) {
     ctx.beginPath();
+    ctx.fillStyle = circle.color;
     ctx.arc(circle.x, circle.y, circle.radius, 0, 2 * Math.PI);
+    ctx.fill();
     ctx.stroke();
 };
 
 var drawBox = function drawBox(box) {
+    ctx.fillStyle = "black";
     ctx.fillRect(box.x - box.width / 2, box.y - box.height / 2, box.width, box.height);
 };
 
@@ -23,6 +26,15 @@ var render = function render() {
     for (var _i = 0; _i < circles.length; _i++) {
         drawCircle(circles[_i]);
     }
+};
+"use strict";
+
+// Convert a canvas coordiante to physics coordinate
+var getCanvasLocation = function getCanvasLocation(mouseEvent) {
+    var rect = canvas.getBoundingClientRect();
+    var x = mouseEvent.clientX - rect.left;
+    var y = mouseEvent.clientY - rect.top;
+    return [x, y];
 };
 'use strict';
 
@@ -126,13 +138,4 @@ var updateCircles = function updateCircles(circleData) {
 
 var updateMouse = function updateMouse() {
     socket.emit('updateMouse', mousePosition);
-};
-"use strict";
-
-// Convert a canvas coordiante to physics coordinate
-var getCanvasLocation = function getCanvasLocation(mouseEvent) {
-    var rect = canvas.getBoundingClientRect();
-    var x = mouseEvent.clientX - rect.left;
-    var y = mouseEvent.clientY - rect.top;
-    return [x, y];
 };
