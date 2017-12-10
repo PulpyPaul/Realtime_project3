@@ -6,8 +6,7 @@ let mouseConstraint;
 let mouseBody;
 let moveCircle;
 let socket;
-// this represents the div that holds the lobby buttons
-let lobby; 
+ 
 // Objects that will be drawn to the canvas
 let boxes;
 let circles;
@@ -15,41 +14,37 @@ let roomName;
 
 
 const setupLobby = () => {
-  lobby = document.getElementById("lobby");
   canvas = document.getElementById("myCanvas");
 
 
   // add event that hides lobby buttons ans shows canvas
   document.getElementById("room1").addEventListener("click", () => {
     canvas.style.display = "block";
-    lobby.style.display = "none";
     roomName = "room1";
     init();
   });
 
   document.getElementById("room2").addEventListener("click", () => {
     canvas.style.display = "block";
-    lobby.style.display = "none";
     roomName = "room2";
     init();
   });
 
   document.getElementById("room3").addEventListener("click", () => {
     canvas.style.display = "block";
-    lobby.style.display = "none";
     roomName = "room3";
     init();
   });
 
   document.getElementById("room4").addEventListener("click", () => {
     canvas.style.display = "block";
-    lobby.style.display = "none";
     roomName = "room4";
     init();
   });
 };
 
 const init = () => {
+  document.getElementById("buttons").style.display = "none";
   // Initialize canvas
   w = canvas.width;
   h = canvas.height;
