@@ -14,11 +14,31 @@
   <body>
     <div class="container">
       <h2 class="blue z-depth-3" id="header">Socket Shot</h2>
-      <div id="buttons">
-        <a class="waves-effect waves-light btn" id="room1">Lobby 1</a>
-        <a class="waves-effect waves-light btn" id="room2">Lobby 2</a>
-        <a class="waves-effect waves-light btn" id="room3">Lobby 3</a>
-        <a class="waves-effect waves-light btn" id="room4">Lobby 4</a>
+      <h5 class="blue-text">Compete against your friends and show off your skills in this
+        physics based canvas game!</h5>
+      <ul class="collapsible" data-collapsible="accordion">
+          <li>
+            <div class="collapsible-header">Objective</div>
+            <div class="collapsible-body"><span>The objective of the game is to flick your
+                colored balls into the bucket. Each ball that lands inside of the bucket will
+                reward the player points!</span></div>
+          </li>
+          <li>
+            <div class="collapsible-header">Controls</div>
+            <div class="collapsible-body"><span>Click and drag the balls of your color to flick
+                them. Moving past the boundry line will cause them to disconnect from your cursor</span></div>
+          </li>
+          <li>
+            <div class="collapsible-header">Frameworks/Libraries</div>
+            <div class="collapsible-body"><span>Node.js, P2 physics, Materialize, Socket.io</span></div>
+          </li>
+      </ul>
+      <h5 class="blue-text">Click on a lobby to join a game</h5>
+      <div class="center-align">
+        <a class="waves-effect waves-light btn blue buttons" id="room1">Lobby 1</a>
+        <a class="waves-effect waves-light btn blue buttons" id="room2">Lobby 2</a>
+        <a class="waves-effect waves-light btn blue buttons" id="room3">Lobby 3</a>
+        <a class="waves-effect waves-light btn blue buttons" id="room4">Lobby 4</a>
       </div>
       <canvas id="myCanvas" height="800" width="900"></canvas>
     </div>
