@@ -2,6 +2,7 @@ const physics = require('./physics.js');
 
 // socket io instance
 let io;
+let players = [];
 
 // setup socket server
 const setupSockets = (ioInstance) => {
@@ -10,7 +11,16 @@ const setupSockets = (ioInstance) => {
   io.sockets.on('connection', (sock) => {
     const socket = sock;
 
-    socket.join('room1');
+    socket.on('joinRoom', (roomName) => {
+      console.log(roomName);
+      socket.join(roomName);
+      players.push({
+        id: socket.id,
+        mousePosition: [],
+        room: roomName, 
+        color: "white"
+      });
+    });
 
     socket.on('startUpdating', () => {
       physics.updateClient();
@@ -33,18 +43,24 @@ const setupSockets = (ioInstance) => {
     });
 
     socket.on('disconnect', () => {
-      socket.leave('room1');
+      socket.leave();
     });
   });
 };
 
 const updateData = (boxData, circleData) => {
-  io.sockets.in('room1').emit('updateBoxes', boxData);
-  io.sockets.in('room1').emit('updateCircles', circleData);
+  for (var i = 1; i < 5; i++)
+  {
+    io.sockets.in("room" + i).emit('updateBoxes', boxData);
+    io.sockets.in("room" + i).emit('updateCircles', circleData);
+  }
 };
 
 const getMouse = () => {
- io.sockets.in('room1').emit('getMouse');    
+  for (var i = 1; i < 5; i++)
+  {
+    io.sockets.in("room" + i).emit('getMouse');    
+  }
 };
 
 module.exports.setupSockets = setupSockets;
