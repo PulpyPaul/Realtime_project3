@@ -26,10 +26,10 @@ let circleBody;
 let mouseBody;
 let mouseConstraint;
 
-let redCount = 0;
-let blueCount = 0;
-let greenCount = 0;
-let yellowCount = 0;
+let redScore = 0;
+let blueScore = 0;
+let greenScore = 0;
+let yellowScore = 0;
 
 const getDrawData = () => {
     // Clear the array
@@ -50,22 +50,26 @@ const getDrawData = () => {
   }
     
     // Adds all buckets x/y and w/h data to the draw data array
-        let bucketCount = 0;
-        let colorVal = 0;
-  for (let i = 0; i < worldBuckets.length; i++) {
+    let bucketCount = 0;
+    let colorVal = 0;
+    
+    for (let i = 0; i < worldBuckets.length; i++) {
         const bucketData = {
-        x: worldBucketBodies[i].position[0],
-        y: worldBucketBodies[i].position[1],
-        width: worldBuckets[i].width,
-        height: worldBuckets[i].height,
-        color: colors[colorVal],
+            x: worldBucketBodies[i].position[0],
+            y: worldBucketBodies[i].position[1],
+            width: worldBuckets[i].width,
+            height: worldBuckets[i].height,
+            color: colors[colorVal],
         };
+        
         bucketCount++;
+        
         if(bucketCount > 2) 
         {
             bucketCount = 0;
             colorVal++;
         }
+        
         bucketDrawData.push(bucketData);
   }
 
@@ -140,7 +144,7 @@ const createBucket = (x, y) => {
     //creates sensor in bucket to check is balls are in bucket
     let bucketSensor = new p2.Box({ width: 70, height: 10});
     bucketSensor.sensor = true;
-    let bucketSensorBody = new p2.Body({ mass: 0, position: [x + 44, y + 45]});
+    let bucketSensorBody = new p2.Body({ mass: 0, position: [x + 44, y + 35]});
     bucketSensorBody.addShape(bucketSensor);
     world.addBody(bucketSensorBody);
     worldSensors.push(bucketSensor);
@@ -183,7 +187,9 @@ const createWorld = () => {
   mouseBody = new p2.Body;
   world.addBody(mouseBody);
     
-    //check if ball is in bucket
+  getDrawData();
+    
+  //check if ball is in bucket
     world.on("beginContact", (event) =>{
        for(let i = 0; i < worldCircleBodies.length; i++)
            {
@@ -198,32 +204,44 @@ const createWorld = () => {
                             //handle ball in bucket event
                             worldCircles[i].radius = 0;
                             worldCircles[i].sensor = true;
-                            /*switch(circleColors[worldCircles[i].id]) {
+                            switch(circleDrawData[i].color) {
                                 case "blue":
-                                    blueCount++;
-                                    console.log("Blue: " + blueCount);
+                                    if (j == 0){
+                                        blueScore += 10;    
+                                    } else {
+                                        blueScore -= 10;    
+                                    }
                                     break;
                                 case "red":
-                                    redCount++;
-                                    console.log("Red: " + redCount);
+                                    if (j == 1){
+                                        redScore += 10;    
+                                    } else {
+                                        redScore -= 10;    
+                                    }
                                     break;
                                 case "green":
-                                    greenCount++;
-                                    console.log("Green: " + greenCount);
+                                    if (j == 2){
+                                        greenScore += 10;    
+                                    } else {
+                                        greenScore -= 10;    
+                                    }
                                     break;
                                 case "yellow":
-                                    yellowCount++;
-                                    console.log("Yellow: " + yellowCount);
+                                    if (j == 3){
+                                        yellowScore += 10;    
+                                    } else {
+                                        yellowScore -= 10;    
+                                    }
                                     break;
                                     
-                            }*/
+                            }
                             }
                         }
                    }
            }
     });
 
-  getDrawData();
+  
 };
 
 const resetCircle = () => {
