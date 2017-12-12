@@ -22,8 +22,6 @@ const colors = ['blue', 'red', 'green', 'yellow'];
 let circleShape;
 let circleBody;
 
-let mouseBody;
-let mouseConstraint;
 let mouseBodies = {};
 let mouseConstraints = {};
 
@@ -282,7 +280,7 @@ const updateClient = () => {
 
 const removeConstraint = (id) => {
   world.removeConstraint(mouseConstraints[id]);
-  mouseConstraint = null;
+  mouseConstraints[id] = null;
 };
 
 const updateMouse = (position, id) => {
