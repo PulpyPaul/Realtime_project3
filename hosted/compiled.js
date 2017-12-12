@@ -182,7 +182,7 @@ var updateCircles = function updateCircles(circleData) {
 };
 
 var updateMouse = function updateMouse() {
-  socket.emit('updateMouse', mousePosition);
+  socket.emit('updateMouse', { position: mousePosition, id: thisPlayer.id });
 };
 
 var updatePlayers = function updatePlayers(playersArray, newPlayer) {

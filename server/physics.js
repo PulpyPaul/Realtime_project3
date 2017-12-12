@@ -287,10 +287,10 @@ const removeConstraint = (id) => {
   mouseConstraints[id] = null;
 };
 
-const updateMouse = (position, id) => {
-  if (position[1] < 575) removeConstraint(id);
-  mouseBodies[id].position[0] = position[0];
-  mouseBodies[id].position[1] = position[1];
+const updateMouse = (data) => {
+  if (data.position[1] < 575) removeConstraint(data.id);
+  mouseBodies[data.id].position[0] = data.position[0];
+  mouseBodies[data.id].position[1] = data.position[1];
 };
 
 const createConstraint = (data) => {
