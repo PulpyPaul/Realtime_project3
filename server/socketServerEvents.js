@@ -32,7 +32,7 @@ const setupSockets = (ioInstance) => {
     });
 
     socket.on('createConstraint', (data) => {
-      physics.createConstraint(data, socket.id);
+      physics.createConstraint(data);
     });
 
     socket.on('updateMouse', (data) => {

@@ -291,13 +291,18 @@ const updateClient = () => {
   }, 16);
 };
 
+const removeConstraint = () => {
+  world.removeConstraint(mouseConstraint);
+  mouseConstraint = null;
+};
+
 const updateMouse = (position) => {
     if(position[1] < 575) removeConstraint();
   mouseBody.position[0] = position[0];
   mouseBody.position[1] = position[1];
 };
 
-const createConstraint = (position, id) => {
+const createConstraint = (position) => {
   const hitObjects = world.hitTest(position, worldCircleBodies);
 
   if (hitObjects.length) {
@@ -315,10 +320,7 @@ const createConstraint = (position, id) => {
   }
 };
 
-const removeConstraint = () => {
-  world.removeConstraint(mouseConstraint);
-  mouseConstraint = null;
-};
+
 
 module.exports.createWorld = createWorld;
 module.exports.startPhysics = startPhysics;
