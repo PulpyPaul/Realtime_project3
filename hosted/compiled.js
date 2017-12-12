@@ -88,6 +88,10 @@ var mouseConstraint = void 0;
 var mouseBody = void 0;
 var moveCircle = void 0;
 var socket = void 0;
+var blueScore = void 0;
+var redScore = void 0;
+var greenScore = void 0;
+var yellowScore = void 0;
 
 // Objects that will be drawn to the canvas
 var boxes = void 0;
@@ -103,16 +107,20 @@ var setupLobby = function setupLobby() {
   // add event that hides lobby buttons and shows canvas
   var lobbyButton = document.getElementById("room1");
   lobbyButton.addEventListener("click", function () {
-    canvas.style.display = "inline-block";
-    document.getElementById("gameInfo").style.display = "inline-block";
+    canvas.style.display = "block";
+    document.getElementById("lobbyText").style.display = "none";
     init();
   });
 };
 
 var init = function init() {
 
-  // hide each of the buttons
   document.getElementById("room1").style.display = "none";
+
+  blueScore = document.getElementById("blueScore");
+  redScore = document.getElementById("redScore");
+  greenScore = document.getElementById("greenScore");
+  yellowScore = document.getElementById("yellowScore");
 
   // Initialize canvas
   w = canvas.width;
@@ -130,6 +138,7 @@ var init = function init() {
   socket.on('updateBuckets', updateBuckets);
   socket.on('getMouse', updateMouse);
   socket.on('updatePlayers', updatePlayers);
+  socket.on('updateScore', updateScore);
 
   socket.emit('startUpdating');
 
@@ -181,6 +190,13 @@ var updatePlayers = function updatePlayers(playersArray, newPlayer) {
   thisPlayer = newPlayer;
 
   document.getElementById("teamColor").innerHTML += thisPlayer.color;
+};
+
+var updateScore = function updateScore(scores) {
+  blueScore.innerHTML = "Blue Score: " + scores.blueScore;
+  redScore.innerHTML = "Red Score: " + scores.redScore;
+  greenScore.innerHTML = "Green Score: " + scores.greenScore;
+  yellowScore.innerHTML = "Yellow Score: " + scores.yellowScore;
 };
 "use strict";
 

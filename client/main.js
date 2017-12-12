@@ -6,6 +6,10 @@ let mouseConstraint;
 let mouseBody;
 let moveCircle;
 let socket;
+let blueScore;
+let redScore;
+let greenScore;
+let yellowScore;
 
 // Objects that will be drawn to the canvas
 let boxes;
@@ -22,23 +26,27 @@ const setupLobby = () => {
   // add event that hides lobby buttons and shows canvas
   let lobbyButton = document.getElementById("room1");
     lobbyButton.addEventListener("click", () => {
-      canvas.style.display = "inline-block";
-      document.getElementById("gameInfo").style.display = "inline-block";
+      canvas.style.display = "block";
+      document.getElementById("lobbyText").style.display = "none";
       init();
     });
 }
 
 const init = () => {
   
-  // hide each of the buttons
-  document.getElementById("room1").style.display = "none";
+  document.getElementById("room1").style.display = "none";    
+    
+  blueScore = document.getElementById("blueScore");
+  redScore = document.getElementById("redScore");
+  greenScore = document.getElementById("greenScore");
+  yellowScore = document.getElementById("yellowScore");
   
   // Initialize canvas
   w = canvas.width;
   h = canvas.height;
   ctx = canvas.getContext("2d");
   ctx.lineWidth = 2;
-
+    
   socket = io.connect();
   socket.emit('joinRoom');
   moveCircle = false;
@@ -49,7 +57,7 @@ const init = () => {
   socket.on('updateBuckets', updateBuckets);
   socket.on('getMouse', updateMouse);
   socket.on('updatePlayers', updatePlayers);
-
+  socket.on('updateScore', updateScore);
   
   socket.emit('startUpdating');
 

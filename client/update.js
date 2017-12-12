@@ -35,5 +35,12 @@ const updatePlayers = (playersArray, newPlayer) => {
   thisPlayer = newPlayer;
 
   document.getElementById("teamColor").innerHTML += thisPlayer.color;
-  
+
+};
+
+const updateScore = (scores) => {
+    blueScore.innerHTML = "Blue Score: " +scores.blueScore;
+    redScore.innerHTML = "Red Score: " +scores.redScore;
+    greenScore.innerHTML = "Green Score: " +scores.greenScore;
+    yellowScore.innerHTML = "Yellow Score: " +scores.yellowScore;
 };
