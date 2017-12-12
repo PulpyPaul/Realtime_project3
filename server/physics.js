@@ -162,7 +162,7 @@ const createBalls = (numBalls) => {
 };
 
 const createMouseBody = (id) => {
-  mouseBodies[id] = new p2.Body;
+  mouseBodies[id] = new p2.Body();
   world.addBody(mouseBodies[id]);
 };
 
