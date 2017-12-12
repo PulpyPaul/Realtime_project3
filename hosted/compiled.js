@@ -64,7 +64,7 @@ var handleMouseDown = function handleMouseDown(e) {
     // Left Click
     if (key === 1) {
         var position = getCanvasLocation(e);
-        socket.emit('createConstraint', position);
+        socket.emit('createConstraint', { position: position, id: thisPlayer.id });
     }
 
     // Right click

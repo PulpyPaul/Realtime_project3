@@ -15,7 +15,7 @@ const handleMouseDown = (e) => {
     // Left Click
     if (key === 1){
         let position = getCanvasLocation(e);
-        socket.emit('createConstraint', position);
+        socket.emit('createConstraint', {position: position, id: thisPlayer.id});
     }
     
     // Right click

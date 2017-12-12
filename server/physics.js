@@ -289,22 +289,22 @@ const removeConstraint = (id) => {
 
 const updateMouse = (position, id) => {
   if (position[1] < 575) removeConstraint(id);
-; mouseBodies[id].position[0] = position[0];
+  mouseBodies[id].position[0] = position[0];
   mouseBodies[id].position[1] = position[1];
 };
 
-const createConstraint = (position, id) => {
-  const hitObjects = world.hitTest(position, worldCircleBodies);
+const createConstraint = (data) => {
+  const hitObjects = world.hitTest(data.position, worldCircleBodies);
 
   if (hitObjects.length) {
-    mouseBodies[id].position[0] = position[0];
-    mouseBodies[id].position[1] = position[1];
-    mouseConstraints[id] = new p2.RevoluteConstraint(mouseBodies[id], hitObjects[0], {
-      worldPivot: position,
+    mouseBodies[data.id].position[0] = data.position[0];
+    mouseBodies[data.id].position[1] = data.position[1];
+    mouseConstraints[data.id] = new p2.RevoluteConstraint(mouseBodies[data.id], hitObjects[0], {
+      worldPivot: data.position,
       collideConnected: false,
     });
 
-    world.addConstraint(mouseConstraints[id]);
+    world.addConstraint(mouseConstraints[data.id]);
   } else {
     return;
   }
