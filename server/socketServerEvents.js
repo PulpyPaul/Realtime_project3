@@ -3,7 +3,6 @@ const physics = require('./physics.js');
 // socket io instance
 let io;
 let players = [];
-let teams = [];
 let colors = ["blue", "red", "green", "yellow"];
 
 // setup socket server
@@ -13,15 +12,17 @@ const setupSockets = (ioInstance) => {
   io.sockets.on('connection', (sock) => {
     const socket = sock;
 
-    socket.on('joinRoom', (roomName) => {
-      
-      players.push({
+    socket.on('joinRoom', () => {
+      var newPlayer = {
         id: socket.id,
         mousePosition: [],
         color: colors[players.length % 4],
-      });
+      }
+      players.push(newPlayer);
         
-      socket.emit('updatePlayers', players);
+      socket.emit('updatePlayers', players, newPlayer);
+      
+      
     });
 
     socket.on('startUpdating', () => {
