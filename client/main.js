@@ -27,6 +27,7 @@ const setupLobby = () => {
   let lobbyButton = document.getElementById("room1");
     lobbyButton.addEventListener("click", () => {
       canvas.style.display = "block";
+      document.getElementById("adBanner").style.display = "block";
       document.getElementById("lobbyText").style.display = "none";
       init();
     });
