@@ -56,8 +56,8 @@ const setupSockets = (ioInstance) => {
   });
 
   socket.join('room1');
-});
 };
+
 
 const updateData = (boxData, circleData, bucketData) => {
   io.sockets.in('room1').emit('updateBoxes', boxData);
