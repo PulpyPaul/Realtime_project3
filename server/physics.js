@@ -22,8 +22,8 @@ const colors = ['blue', 'red', 'green', 'yellow'];
 let circleShape;
 let circleBody;
 
-let mouseBody;
-let mouseConstraint;
+let mouseBodies = {};
+let mouseConstraints = {};
 
 const scores = { redScore: 0, blueScore: 0, greenScore: 0, yellowScore: 0 };
 
@@ -161,6 +161,11 @@ const createBalls = (numBalls) => {
   }
 };
 
+const createMouseBody = (id) => {
+    mouseBodies[id] = new p2.Body;
+    world.addBody(mouseBodies[id]);
+};
+
 const createWorld = () => {
     // Initializes the p2 physics simulation
   world = new p2.World({ gravity: [0, 200] });
@@ -173,10 +178,6 @@ const createWorld = () => {
   createBucket(Math.floor((Math.random() * 100) + 250), Math.floor((Math.random() * 150) + 250));
   createBucket(Math.floor((Math.random() * 100) + 450), Math.floor((Math.random() * 150) + 250));
   createBucket(Math.floor((Math.random() * 100) + 650), Math.floor((Math.random() * 150) + 250));
-
-  // Creates an empty body to hold the mouse
-  mouseBody = new p2.Body;
-  world.addBody(mouseBody);
 
   getDrawData();
 
@@ -277,30 +278,29 @@ const updateClient = () => {
   }, 16);
 };
 
-
-const removeConstraint = () => {
-  world.removeConstraint(mouseConstraint);
-  mouseConstraint = null;
+const removeConstraint = (id) => {
+  world.removeConstraint(mouseConstraints[id]);
+  mouseConstraints[id] = null;
 };
 
-const updateMouse = (position) => {
-  if (position[1] < 575) removeConstraint();
-  mouseBody.position[0] = position[0];
-  mouseBody.position[1] = position[1];
-};
+const updateMouse = (position, id) => {
+    if(position[1] < 575) removeConstraint(id);
+  mouseBodies[id].position[0] = position[0];
+  mouseBodies[id].position[1] = position[1];
+}
 
-const createConstraint = (position) => {
+const createConstraint = (position, id) => {
   const hitObjects = world.hitTest(position, worldCircleBodies);
 
   if (hitObjects.length) {
-    mouseBody.position[0] = position[0];
-    mouseBody.position[1] = position[1];
-    mouseConstraint = new p2.RevoluteConstraint(mouseBody, hitObjects[0], {
-      worldPivot: position,
-      collideConnected: false,
-    });
+    mouseBodies[id].position[0] = position[0];
+    mouseBodies[id].position[1] = position[1];
+        mouseConstraints[id] = new p2.RevoluteConstraint(mouseBodies[id], hitObjects[0], {
+        worldPivot: position,
+        collideConnected: false,
+        });
 
-    world.addConstraint(mouseConstraint);
+        world.addConstraint(mouseConstraints[id]);
   } else {
     return;
   }
@@ -314,3 +314,4 @@ module.exports.resetCircle = resetCircle;
 module.exports.createConstraint = createConstraint;
 module.exports.updateMouse = updateMouse;
 module.exports.removeConstraint = removeConstraint;
+module.exports.createMouseBody = createMouseBody;
