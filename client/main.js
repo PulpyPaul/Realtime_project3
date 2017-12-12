@@ -21,7 +21,8 @@ const setupLobby = () => {
   // add event that hides lobby buttons and shows canvas
   let lobbyButton = document.getElementById("room1");
     lobbyButton.addEventListener("click", () => {
-      canvas.style.display = "block";
+      canvas.style.display = "inline-block";
+      document.getElementById("gameInfo").style.display = "inline-block";
       init();
     });
 }
