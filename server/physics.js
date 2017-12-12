@@ -12,7 +12,6 @@ const worldCircleBodies = [];
 const worldBoxBodies = [];
 const worldSensors = [];
 const worldSensorBodies = [];
-const circleColors = [];
 const numOfBalls = 40;
 const maxVelocity = 600;
 const worldBuckets = [];
@@ -149,12 +148,12 @@ const createBucket = (x, y) => {
     
 };
 
-const createBalls = (numBalls, numPlayers) => {
+const createBalls = (numBalls) => {
             for(let i = 0; i < (numBalls); i++)
                 {
                     // Create new circle shape and body
                     circleShape = new p2.Circle({ radius: 15 });
-                    //circleColors[circleShape.id] = colors[i%numPlayers];
+                    
                     let randomX = Math.floor((Math.random() * 800) + 50);
                     let randomY = Math.floor((Math.random() * 200) + 550);
                     circleBody = new p2.Body({ mass: 1, position: [randomX, randomY] });
@@ -171,7 +170,7 @@ const createWorld = () => {
     // Initializes the p2 physics simulation
     world = new p2.World({ gravity: [0, 200] });
 
-    createBalls(numOfBalls, 4);
+    createBalls(numOfBalls);
     
     createWalls();
     
@@ -194,16 +193,16 @@ const createWorld = () => {
                    {
                         let c = worldCircleBodies[i];
                         let s = worldSensorBodies[j];
-                        if((event.bodyA == c || event.bodyB == c) && (event.bodyA == s || event.bodyB == s))
+                        if((event.bodyA === c || event.bodyB === c) && (event.bodyA === s || event.bodyB === s))
                         {
-                            if(worldCircles[i].sensor != true) 
+                            if(worldCircles[i].sensor !== true) 
                             {
                             //handle ball in bucket event
                             worldCircles[i].radius = 0;
                             worldCircles[i].sensor = true;
                             switch(circleDrawData[i].color) {
                                 case "blue":
-                                    if (j == 0){
+                                    if (j === 0){
                                         scores.blueScore += 10;    
                                     } else {
                                         scores.blueScore -= 10;    
@@ -211,7 +210,7 @@ const createWorld = () => {
                                     sockets.updateScore(scores);
                                     break;
                                 case "red":
-                                    if (j == 1){
+                                    if (j === 1){
                                         scores.redScore += 10;    
                                     } else {
                                         scores.redScore -= 10;    
@@ -219,7 +218,7 @@ const createWorld = () => {
                                     sockets.updateScore(scores);
                                     break;
                                 case "green":
-                                    if (j == 2){
+                                    if (j === 2){
                                         scores.greenScore += 10;    
                                     } else {
                                         scores.greenScore -= 10;    
@@ -227,12 +226,14 @@ const createWorld = () => {
                                     sockets.updateScore(scores);
                                     break;
                                 case "yellow":
-                                    if (j == 3){
+                                    if (j === 3){
                                         scores.yellowScore += 10;    
                                     } else {
                                         scores.yellowScore -= 10;    
                                     }
                                     sockets.updateScore(scores);
+                                    break;
+                                default:
                                     break;
                             }
                             }
