@@ -289,7 +289,7 @@ const updateMouse = (position) => {
   mouseBody.position[1] = position[1];
 };
 
-const createConstraint = (position, id) => {
+const createConstraint = (position) => {
   const hitObjects = world.hitTest(position, worldCircleBodies);
 
   if (hitObjects.length) {
