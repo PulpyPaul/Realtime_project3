@@ -56,3 +56,6 @@ typings/
 
 # dotenv environment variables file
 .env
+
+# ignore visual studio folder (Tim used VS to find where some variables were)
+.vs

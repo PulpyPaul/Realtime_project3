@@ -87,37 +87,22 @@ var socket = void 0;
 
 // Objects that will be drawn to the canvas
 var boxes = void 0;
-var buckets = void 0;
+var buckets = {};
 var circles = void 0;
 var roomName = void 0;
 
 var setupLobby = function setupLobby() {
   canvas = document.getElementById("myCanvas");
 
-  // add event that hides lobby buttons ans shows canvas
-  document.getElementById("room1").addEventListener("click", function () {
-    canvas.style.display = "block";
-    roomName = "room1";
-    init();
-  });
-
-  document.getElementById("room2").addEventListener("click", function () {
-    canvas.style.display = "block";
-    roomName = "room2";
-    init();
-  });
-
-  document.getElementById("room3").addEventListener("click", function () {
-    canvas.style.display = "block";
-    roomName = "room3";
-    init();
-  });
-
-  document.getElementById("room4").addEventListener("click", function () {
-    canvas.style.display = "block";
-    roomName = "room4";
-    init();
-  });
+  // add event that hides lobby buttons and shows canvas
+  for (var i = 1; i < 5; i++) {
+    var temp = document.getElementById("room" + i);
+    temp.addEventListener("click", function () {
+      canvas.style.display = "block";
+      roomName = temp.id;
+      init();
+    });
+  }
 };
 
 var updateColor = function updateColor(color) {
@@ -125,7 +110,10 @@ var updateColor = function updateColor(color) {
 };
 
 var init = function init() {
-  document.getElementById("buttons").style.display = "none";
+  // hide each of the buttons
+  for (var j = 1; j < 5; j++) {
+    document.getElementById("room" + j).style.display = "none";
+  }
   // Initialize canvas
   w = canvas.width;
   h = canvas.height;

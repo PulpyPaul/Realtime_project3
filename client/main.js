@@ -6,10 +6,10 @@ let mouseConstraint;
 let mouseBody;
 let moveCircle;
 let socket;
- 
+
 // Objects that will be drawn to the canvas
 let boxes;
-let buckets;
+let buckets = {};
 let circles;
 let roomName;
 
@@ -18,38 +18,27 @@ const setupLobby = () => {
   canvas = document.getElementById("myCanvas");
 
 
-  // add event that hides lobby buttons ans shows canvas
-  document.getElementById("room1").addEventListener("click", () => {
-    canvas.style.display = "block";
-    roomName = "room1";
-    init();
-  });
+  // add event that hides lobby buttons and shows canvas
+  for(var i = 1; i < 5; i++){
+    var temp = document.getElementById("room" + i);
+    temp.addEventListener("click", () => {
+      canvas.style.display = "block";
+      roomName = temp.id;
+      init();
+    });
+  }
 
-  document.getElementById("room2").addEventListener("click", () => {
-    canvas.style.display = "block";
-    roomName = "room2";
-    init();
-  });
-
-  document.getElementById("room3").addEventListener("click", () => {
-    canvas.style.display = "block";
-    roomName = "room3";
-    init();
-  });
-
-  document.getElementById("room4").addEventListener("click", () => {
-    canvas.style.display = "block";
-    roomName = "room4";
-    init();
-  });
 };
 
 const updateColor = (color) => {
-    document.getElementById("playercolor").innerHTML = color;
+  document.getElementById("playercolor").innerHTML = color;
 }
 
 const init = () => {
-  document.getElementById("buttons").style.display = "none";
+  // hide each of the buttons
+  for(var j = 1; j < 5; j++){
+    document.getElementById("room" + j).style.display = "none";
+  }
   // Initialize canvas
   w = canvas.width;
   h = canvas.height;
@@ -75,7 +64,7 @@ const init = () => {
   canvas.addEventListener('mouseout', handleMouseUp);
 
   document.addEventListener('keydown', handleKeyDown);
-  
+
 };
 
 window.onload = setupLobby;
