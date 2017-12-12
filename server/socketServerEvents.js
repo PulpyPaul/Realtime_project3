@@ -22,42 +22,40 @@ const setupSockets = (ioInstance) => {
 
       physics.createMouseBody(socket.id);
       socket.emit('updatePlayers', players, newPlayer);
+    });
 
-    });              
 
+    socket.on('startUpdating', () => {
+      physics.updateClient();
+    });
+
+    socket.on('resetCircle', () => {
+      physics.resetCircle();
+    });
+
+    socket.on('createConstraint', (data) => {
+      physics.createConstraint(data, socket.id);
+    });
+
+    socket.on('updateMouse', (data) => {
+      physics.updateMouse(data, socket.id);
+    });
+
+    socket.on('removeConstraint', () => {
+      physics.removeConstraint(socket.id);
+    });
+
+    socket.on('disconnect', () => {
+      socket.leave();
+
+      for (let i = 0; i < players.length; i++) {
+        if (players[i].id === socket.id) { players.splice(i, 1); }
+      }
+    });
+
+    socket.join('room1');
   });
-
-  socket.on('startUpdating', () => {
-    physics.updateClient();
-  });
-
-  socket.on('resetCircle', () => {
-    physics.resetCircle();
-  });
-
-  socket.on('createConstraint', (data) => {
-    physics.createConstraint(data, socket.id);
-  });
-
-  socket.on('updateMouse', (data) => {
-    physics.updateMouse(data, socket.id);
-  });
-
-  socket.on('removeConstraint', () => {
-    physics.removeConstraint(socket.id);
-  });
-
-  socket.on('disconnect', () => {
-    socket.leave();
-
-    for (let i = 0; i < players.length; i++) {
-      if (players[i].id === socket.id) { players.splice(i, 1); }
-    }
-  });
-
-  socket.join('room1');
 };
-
 
 const updateData = (boxData, circleData, bucketData) => {
   io.sockets.in('room1').emit('updateBoxes', boxData);

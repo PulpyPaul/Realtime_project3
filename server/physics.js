@@ -22,8 +22,8 @@ const colors = ['blue', 'red', 'green', 'yellow'];
 let circleShape;
 let circleBody;
 
-let mouseBodies = {};
-let mouseConstraints = {};
+const mouseBodies = {};
+const mouseConstraints = {};
 
 const scores = { redScore: 0, blueScore: 0, greenScore: 0, yellowScore: 0 };
 
@@ -162,8 +162,8 @@ const createBalls = (numBalls) => {
 };
 
 const createMouseBody = (id) => {
-    mouseBodies[id] = new p2.Body;
-    world.addBody(mouseBodies[id]);
+  mouseBodies[id] = new p2.Body;
+  world.addBody(mouseBodies[id]);
 };
 
 const createWorld = () => {
@@ -284,10 +284,10 @@ const removeConstraint = (id) => {
 };
 
 const updateMouse = (position, id) => {
-    if(position[1] < 575) removeConstraint(id);
+  if (position[1] < 575) removeConstraint(id);
   mouseBodies[id].position[0] = position[0];
   mouseBodies[id].position[1] = position[1];
-}
+};
 
 const createConstraint = (position, id) => {
   const hitObjects = world.hitTest(position, worldCircleBodies);
@@ -295,12 +295,12 @@ const createConstraint = (position, id) => {
   if (hitObjects.length) {
     mouseBodies[id].position[0] = position[0];
     mouseBodies[id].position[1] = position[1];
-        mouseConstraints[id] = new p2.RevoluteConstraint(mouseBodies[id], hitObjects[0], {
-        worldPivot: position,
-        collideConnected: false,
-        });
+    mouseConstraints[id] = new p2.RevoluteConstraint(mouseBodies[id], hitObjects[0], {
+      worldPivot: position,
+      collideConnected: false,
+    });
 
-        world.addConstraint(mouseConstraints[id]);
+    world.addConstraint(mouseConstraints[id]);
   } else {
     return;
   }
