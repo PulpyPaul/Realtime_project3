@@ -2,8 +2,8 @@ const physics = require('./physics.js');
 
 // socket io instance
 let io;
-let players = [];
-let colors = ["Blue", "Red", "Green", "Yellow"];
+const players = [];
+const colors = ['Blue', 'Red', 'Green', 'Yellow'];
 
 // setup socket server
 const setupSockets = (ioInstance) => {
@@ -13,17 +13,17 @@ const setupSockets = (ioInstance) => {
     const socket = sock;
 
     socket.on('joinRoom', () => {
-      var newPlayer = {      
+      const newPlayer = {
         id: socket.id,
         mousePosition: [],
         color: colors[players.length % 4],
-      }
-      
+      };
+
       players.push(newPlayer);
-        
-        physics.createMouseBody(socket.id);
-        
-      socket.emit('updatePlayers', players, newPlayer);      
+
+      physics.createMouseBody(socket.id);
+
+      socket.emit('updatePlayers', players, newPlayer);
     });
 
     socket.on('startUpdating', () => {
@@ -47,26 +47,30 @@ const setupSockets = (ioInstance) => {
     });
 
     socket.on('disconnect', () => {
-      socket.leave();
+      physics.removeMouseBody(socket.id);
+      for (let i = 0; i < players.length; i++) {
+        if (players[i].id === socket.id) { players.splice(i, 1); }
+      }
+      socket.leave('room1');
     });
-      
-    socket.join('room1'); 
+
+    socket.join('room1');
   });
 };
 
 const updateData = (boxData, circleData, bucketData) => {
-    io.sockets.in("room1").emit('updateBoxes', boxData);
-    io.sockets.in("room1").emit('updateCircles', circleData);
-    io.sockets.in("room1").emit('updateBuckets', bucketData);
+  io.sockets.in('room1').emit('updateBoxes', boxData);
+  io.sockets.in('room1').emit('updateCircles', circleData);
+  io.sockets.in('room1').emit('updateBuckets', bucketData);
 };
 
-const getMouse = () => { 
-    io.sockets.in("room1").emit('getMouse');    
+const getMouse = () => {
+  io.sockets.in('room1').emit('getMouse');
 };
 
 const updateScore = (newScores) => {
-    io.sockets.in("room1").emit('updateScore', newScores);
-}
+  io.sockets.in('room1').emit('updateScore', newScores);
+};
 
 module.exports.setupSockets = setupSockets;
 module.exports.updateData = updateData;
