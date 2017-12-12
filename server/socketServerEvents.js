@@ -20,6 +20,8 @@ const setupSockets = (ioInstance) => {
         color: colors[players.length % 4],
       });
         
+        physics.createMouseBody(socket.id);
+        
       socket.emit('updatePlayers', players);
     });
 
@@ -32,15 +34,15 @@ const setupSockets = (ioInstance) => {
     });
 
     socket.on('createConstraint', (data) => {
-      physics.createConstraint(data);
+      physics.createConstraint(data, socket.id);
     });
 
     socket.on('updateMouse', (data) => {
-      physics.updateMouse(data);
+      physics.updateMouse(data, socket.id);
     });
 
     socket.on('removeConstraint', () => {
-      physics.removeConstraint();
+      physics.removeConstraint(socket.id);
     });
 
     socket.on('disconnect', () => {
