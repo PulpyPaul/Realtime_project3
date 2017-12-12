@@ -26,7 +26,7 @@ const updateCircles = (circleData) => {
 };
 
 const updateMouse = () => {
-  socket.emit('updateMouse', {position: mousePosition, id: thisPlayer.id});
+  socket.emit('updateMouse', mousePosition);
 };
 
 const updatePlayers = (playersArray, newPlayer) => {

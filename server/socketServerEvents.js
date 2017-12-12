@@ -41,7 +41,7 @@ const setupSockets = (ioInstance) => {
     });
 
     socket.on('updateMouse', (data) => {
-      physics.updateMouse(data);
+      physics.updateMouse(data, socket.id);
     });
 
     socket.on('removeConstraint', () => {
