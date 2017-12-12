@@ -108,6 +108,7 @@ var setupLobby = function setupLobby() {
   var lobbyButton = document.getElementById("room1");
   lobbyButton.addEventListener("click", function () {
     canvas.style.display = "block";
+    document.getElementById("adBanner").style.display = "block";
     document.getElementById("lobbyText").style.display = "none";
     init();
   });

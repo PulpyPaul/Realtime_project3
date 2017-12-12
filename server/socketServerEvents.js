@@ -22,9 +22,10 @@ const setupSockets = (ioInstance) => {
       players.push(newPlayer);
 
       physics.createMouseBody(socket.id);
-
+        
       socket.emit('updatePlayers', players, newPlayer);
     });
+
 
     socket.on('startUpdating', () => {
       physics.updateClient();
