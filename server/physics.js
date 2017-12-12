@@ -162,7 +162,7 @@ const createBalls = (numBalls) => {
 };
 
 const createMouseBody = (id) => {
-  mouseBodies[id] = new p2.Body(position: [0, 0]);
+  mouseBodies[id] = new p2.Body({ mass: 0, position: [0, 0] });
   world.addBody(mouseBodies[id]);
 };
 
@@ -289,7 +289,7 @@ const removeConstraint = (id) => {
 
 const updateMouse = (position, id) => {
   if (position[1] < 575) removeConstraint(id);
-  mouseBodies[id].position[0] = position[0];
+; mouseBodies[id].position[0] = position[0];
   mouseBodies[id].position[1] = position[1];
 };
 
