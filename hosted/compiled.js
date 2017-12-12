@@ -3,8 +3,10 @@
 var drawCircle = function drawCircle(circle) {
     ctx.beginPath();
     ctx.strokeStyle = "black";
+    ctx.fillStyle = circle.color;
     ctx.arc(circle.x, circle.y, circle.radius, 0, 2 * Math.PI);
     ctx.stroke();
+    ctx.fill();
 };
 
 var drawBox = function drawBox(box) {
@@ -13,8 +15,10 @@ var drawBox = function drawBox(box) {
 };
 
 var drawBucket = function drawBucket(bucket) {
+    ctx.strokeStyle = "black";
     ctx.fillStyle = bucket.color;
     ctx.fillRect(bucket.x - bucket.width / 2, bucket.y - bucket.height / 2, bucket.width, bucket.height);
+    ctx.strokeRect(bucket.x - bucket.width / 2, bucket.y - bucket.height / 2, bucket.width, bucket.height);
 };
 
 var render = function render() {
@@ -91,29 +95,24 @@ var buckets = {};
 var circles = void 0;
 var roomName = void 0;
 
+var players = [];
+
 var setupLobby = function setupLobby() {
   canvas = document.getElementById("myCanvas");
 
   // add event that hides lobby buttons and shows canvas
-  for (var i = 1; i < 5; i++) {
-    var temp = document.getElementById("room" + i);
-    temp.addEventListener("click", function () {
-      canvas.style.display = "block";
-      roomName = temp.id;
-      init();
-    });
-  }
-};
-
-var updateColor = function updateColor(color) {
-  document.getElementById("playercolor").innerHTML = color;
+  var lobbyButton = document.getElementById("room1");
+  lobbyButton.addEventListener("click", function () {
+    canvas.style.display = "block";
+    init();
+  });
 };
 
 var init = function init() {
+
   // hide each of the buttons
-  for (var j = 1; j < 5; j++) {
-    document.getElementById("room" + j).style.display = "none";
-  }
+  document.getElementById("room1").style.display = "none";
+
   // Initialize canvas
   w = canvas.width;
   h = canvas.height;
@@ -129,7 +128,7 @@ var init = function init() {
   socket.on('updateCircles', updateCircles);
   socket.on('updateBuckets', updateBuckets);
   socket.on('getMouse', updateMouse);
-  socket.on('playerColor', updateColor);
+  socket.on('updatePlayer', updatePlayers);
 
   socket.emit('startUpdating');
 
@@ -173,6 +172,10 @@ var updateCircles = function updateCircles(circleData) {
 
 var updateMouse = function updateMouse() {
     socket.emit('updateMouse', mousePosition);
+};
+
+var updatePlayers = function updatePlayers(playersArray) {
+    players = playersArray;
 };
 "use strict";
 

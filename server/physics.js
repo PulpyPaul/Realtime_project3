@@ -13,8 +13,8 @@ const worldBoxBodies = [];
 const worldSensors = [];
 const worldSensorBodies = [];
 const circleColors = [];
-const numOfBalls = 24;
-const maxVelocity = 500;
+const numOfBalls = 48;
+const maxVelocity = 600;
 const worldBuckets = [];
 const worldBucketBodies = [];
 
@@ -75,7 +75,7 @@ const getDrawData = () => {
       x: worldCircleBodies[i].position[0],
       y: worldCircleBodies[i].position[1],
       radius: worldCircles[i].radius,
-      //color: circleColors[worldCircles[i].id],
+      color: colors[i % 4],
     };
 
     circleDrawData.push(circleData);
@@ -130,8 +130,8 @@ const createBucket = (x, y) => {
     worldBuckets.push(bucketBottom);
     worldBucketBodies.push(bucketBottomBody);
     
-    let bucketRight = new p2.Box({ width: 12, height: 100});
-    let bucketRightBody = new p2.Body({ mass: 0, position: [x + 88, y]});
+    let bucketRight = new p2.Box({ width: 12, height: 95});
+    let bucketRightBody = new p2.Body({ mass: 0, position: [x + 88, y - 4]});
     bucketRightBody.addShape(bucketRight);
     world.addBody(bucketRightBody);
     worldBuckets.push(bucketRight);
@@ -168,11 +168,11 @@ const createBalls = (numBalls, numPlayers) => {
 
 const createWorld = () => {
     // Initializes the p2 physics simulation
-  world = new p2.World({ gravity: [0, 200] });
+    world = new p2.World({ gravity: [0, 200] });
 
     createBalls(numOfBalls, 4);
     
-  createWalls();
+    createWalls();
     
     createBucket(Math.floor((Math.random() * 100) + 50), Math.floor((Math.random() * 150) + 250));
     createBucket(Math.floor((Math.random() * 100) + 250), Math.floor((Math.random() * 150) + 250));

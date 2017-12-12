@@ -1,8 +1,10 @@
 const drawCircle = (circle) => {
     ctx.beginPath();
     ctx.strokeStyle = "black";
+    ctx.fillStyle = circle.color;
     ctx.arc(circle.x, circle.y, circle.radius, 0, 2*Math.PI);
     ctx.stroke();
+    ctx.fill();
 };
 
 const drawBox = (box) => {
@@ -11,8 +13,10 @@ const drawBox = (box) => {
 };
 
 const drawBucket = (bucket) => {
+    ctx.strokeStyle = "black";
     ctx.fillStyle = bucket.color;
     ctx.fillRect(bucket.x - bucket.width / 2, bucket.y - bucket.height / 2, bucket.width, bucket.height);
+    ctx.strokeRect(bucket.x - bucket.width / 2, bucket.y - bucket.height / 2, bucket.width, bucket.height);
 };
 
 const render = () => {

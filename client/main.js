@@ -13,32 +13,24 @@ let buckets = {};
 let circles;
 let roomName;
 
+let players = [];
 
 const setupLobby = () => {
   canvas = document.getElementById("myCanvas");
 
-
   // add event that hides lobby buttons and shows canvas
-  for(var i = 1; i < 5; i++){
-    var temp = document.getElementById("room" + i);
-    temp.addEventListener("click", () => {
+  let lobbyButton = document.getElementById("room1");
+    lobbyButton.addEventListener("click", () => {
       canvas.style.display = "block";
-      roomName = temp.id;
       init();
     });
-  }
-
-};
-
-const updateColor = (color) => {
-  document.getElementById("playercolor").innerHTML = color;
 }
 
 const init = () => {
+  
   // hide each of the buttons
-  for(var j = 1; j < 5; j++){
-    document.getElementById("room" + j).style.display = "none";
-  }
+  document.getElementById("room1").style.display = "none";
+  
   // Initialize canvas
   w = canvas.width;
   h = canvas.height;
@@ -54,7 +46,7 @@ const init = () => {
   socket.on('updateCircles', updateCircles);
   socket.on('updateBuckets', updateBuckets);
   socket.on('getMouse', updateMouse);
-  socket.on('playerColor', updateColor);
+  socket.on('updatePlayer', updatePlayers);
 
   socket.emit('startUpdating');
 

@@ -28,3 +28,7 @@ const updateCircles = (circleData) => {
 const updateMouse = () => {
     socket.emit('updateMouse', mousePosition);
 };
+
+const updatePlayers = (playersArray) => {
+    players = playersArray;    
+};
