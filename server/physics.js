@@ -181,14 +181,6 @@ const createWorld = () => {
   createBucket(Math.floor((Math.random() * 100) + 450), Math.floor((Math.random() * 150) + 250));
   createBucket(Math.floor((Math.random() * 100) + 650), Math.floor((Math.random() * 150) + 250));
 
-  // Creates an empty body to hold the mouse
-<<<<<<< HEAD
-    
-=======
-  mouseBody = new p2.Body;
-  world.addBody(mouseBody);
-
->>>>>>> 00ee65a7afd21b126d8947868a9f6fb3b6b07e49
   getDrawData();
 
   // check if ball is in bucket
@@ -288,7 +280,6 @@ const updateClient = () => {
   }, 16);
 };
 
-<<<<<<< HEAD
 const removeConstraint = (id) => {
   world.removeConstraint(mouseConstraints[id]);
   mouseConstraint = null;
@@ -298,25 +289,23 @@ const updateMouse = (position, id) => {
     if(position[1] < 575) removeConstraint(id);
   mouseBodies[id].position[0] = position[0];
   mouseBodies[id].position[1] = position[1];
-=======
+}
 
-const removeConstraint = () => {
-  world.removeConstraint(mouseConstraint);
+const removeConstraint = (id) => {
+  world.removeConstraint(mouseConstraints[id]);
   mouseConstraint = null;
 };
 
 const updateMouse = (position) => {
-  if (position[1] < 575) removeConstraint();
-  mouseBody.position[0] = position[0];
-  mouseBody.position[1] = position[1];
->>>>>>> 00ee65a7afd21b126d8947868a9f6fb3b6b07e49
+  if (position[1] < 575) removeConstraint(id);
+  mouseBodies[id].position[0] = position[0];
+  mouseBodies[id].position[1] = position[1];
 };
 
 const createConstraint = (position, id) => {
   const hitObjects = world.hitTest(position, worldCircleBodies);
 
   if (hitObjects.length) {
-<<<<<<< HEAD
     mouseBodies[id].position[0] = position[0];
     mouseBodies[id].position[1] = position[1];
         mouseConstraints[id] = new p2.RevoluteConstraint(mouseBodies[id], hitObjects[0], {
@@ -325,19 +314,7 @@ const createConstraint = (position, id) => {
         });
 
         world.addConstraint(mouseConstraints[id]);
-  }
-    else {
-=======
-    mouseBody.position[0] = position[0];
-    mouseBody.position[1] = position[1];
-    mouseConstraint = new p2.RevoluteConstraint(mouseBody, hitObjects[0], {
-      worldPivot: position,
-      collideConnected: false,
-    });
-
-    world.addConstraint(mouseConstraint);
   } else {
->>>>>>> 00ee65a7afd21b126d8947868a9f6fb3b6b07e49
     return;
   }
 };

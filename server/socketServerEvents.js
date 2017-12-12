@@ -18,16 +18,12 @@ const setupSockets = (ioInstance) => {
         mousePosition: [],
         color: colors[players.length % 4],
       }
+      
       players.push(newPlayer);
         
-<<<<<<< HEAD
         physics.createMouseBody(socket.id);
         
-      socket.emit('updatePlayers', players);
-=======
       socket.emit('updatePlayers', players, newPlayer);      
-      
->>>>>>> 00ee65a7afd21b126d8947868a9f6fb3b6b07e49
     });
 
     socket.on('startUpdating', () => {
