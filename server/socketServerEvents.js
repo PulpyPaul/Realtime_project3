@@ -3,7 +3,7 @@ const physics = require('./physics.js');
 // socket io instance
 let io;
 let players = [];
-let colors = ["blue", "red", "green", "yellow"];
+let colors = ["Blue", "Red", "Green", "Yellow"];
 
 // setup socket server
 const setupSockets = (ioInstance) => {
@@ -13,16 +13,21 @@ const setupSockets = (ioInstance) => {
     const socket = sock;
 
     socket.on('joinRoom', () => {
-      
-      players.push({
+      var newPlayer = {      
         id: socket.id,
         mousePosition: [],
         color: colors[players.length % 4],
-      });
+      }
+      players.push(newPlayer);
         
+<<<<<<< HEAD
         physics.createMouseBody(socket.id);
         
       socket.emit('updatePlayers', players);
+=======
+      socket.emit('updatePlayers', players, newPlayer);      
+      
+>>>>>>> 00ee65a7afd21b126d8947868a9f6fb3b6b07e49
     });
 
     socket.on('startUpdating', () => {

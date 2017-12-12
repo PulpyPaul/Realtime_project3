@@ -15,9 +15,10 @@ let yellowScore;
 let boxes;
 let buckets = {};
 let circles;
-let roomName;
+
 
 let players = [];
+let thisPlayer = {};
 
 const setupLobby = () => {
   canvas = document.getElementById("myCanvas");
@@ -47,7 +48,7 @@ const init = () => {
   ctx.lineWidth = 2;
     
   socket = io.connect();
-  socket.emit('joinRoom', roomName);
+  socket.emit('joinRoom');
   moveCircle = false;
 
   socket.on('startDrawing', animate);
@@ -55,9 +56,9 @@ const init = () => {
   socket.on('updateCircles', updateCircles);
   socket.on('updateBuckets', updateBuckets);
   socket.on('getMouse', updateMouse);
-  socket.on('updatePlayer', updatePlayers);
+  socket.on('updatePlayers', updatePlayers);
   socket.on('updateScore', updateScore);
-
+  
   socket.emit('startUpdating');
 
   canvas.addEventListener('mousedown', handleMouseDown);

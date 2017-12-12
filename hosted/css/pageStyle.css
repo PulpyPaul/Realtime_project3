@@ -42,3 +42,7 @@ h2 {
   color: white;
   margin-top: 5px;
 }
+
+#teamColor {
+  font-weight: bold;
+}

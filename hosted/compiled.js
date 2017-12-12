@@ -97,9 +97,9 @@ var yellowScore = void 0;
 var boxes = void 0;
 var buckets = {};
 var circles = void 0;
-var roomName = void 0;
 
 var players = [];
+var thisPlayer = {};
 
 var setupLobby = function setupLobby() {
   canvas = document.getElementById("myCanvas");
@@ -129,7 +129,7 @@ var init = function init() {
   ctx.lineWidth = 2;
 
   socket = io.connect();
-  socket.emit('joinRoom', roomName);
+  socket.emit('joinRoom');
   moveCircle = false;
 
   socket.on('startDrawing', animate);
@@ -137,7 +137,7 @@ var init = function init() {
   socket.on('updateCircles', updateCircles);
   socket.on('updateBuckets', updateBuckets);
   socket.on('getMouse', updateMouse);
-  socket.on('updatePlayer', updatePlayers);
+  socket.on('updatePlayers', updatePlayers);
   socket.on('updateScore', updateScore);
 
   socket.emit('startUpdating');
@@ -157,42 +157,46 @@ var animating = false;
 
 // Animation loop
 var animate = function animate() {
-    requestAnimationFrame(animate);
+  requestAnimationFrame(animate);
 
-    // Render scene
-    render();
+  // Render scene
+  render();
 };
 
 var updateBuckets = function updateBuckets(bucketData) {
-    buckets = bucketData;
+  buckets = bucketData;
 };
 
 var updateBoxes = function updateBoxes(boxData) {
-    boxes = boxData;
+  boxes = boxData;
 };
 
 var updateCircles = function updateCircles(circleData) {
-    circles = circleData;
+  circles = circleData;
 
-    if (!animating) {
-        animate();
-        animating = true;
-    }
+  if (!animating) {
+    animate();
+    animating = true;
+  }
 };
 
 var updateMouse = function updateMouse() {
-    socket.emit('updateMouse', mousePosition);
+  socket.emit('updateMouse', mousePosition);
 };
 
-var updatePlayers = function updatePlayers(playersArray) {
-    players = playersArray;
+var updatePlayers = function updatePlayers(playersArray, newPlayer) {
+  players = playersArray;
+
+  thisPlayer = newPlayer;
+
+  document.getElementById("teamColor").innerHTML += thisPlayer.color;
 };
 
 var updateScore = function updateScore(scores) {
-    blueScore.innerHTML = "Blue Score: " + scores.blueScore;
-    redScore.innerHTML = "Red Score: " + scores.redScore;
-    greenScore.innerHTML = "Green Score: " + scores.greenScore;
-    yellowScore.innerHTML = "Yellow Score: " + scores.yellowScore;
+  blueScore.innerHTML = "Blue Score: " + scores.blueScore;
+  redScore.innerHTML = "Red Score: " + scores.redScore;
+  greenScore.innerHTML = "Green Score: " + scores.greenScore;
+  yellowScore.innerHTML = "Yellow Score: " + scores.yellowScore;
 };
 "use strict";
 
