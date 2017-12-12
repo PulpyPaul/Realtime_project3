@@ -30,12 +30,15 @@ h5 {
 }
 
 #gameInfo {
-  display: none;
   padding: 10px;
-  width: 250;
-  max-width: 250;
-  height: 800;
-  max-height: 800;
-  background-color: #2196f3;
   vertical-align: top;
+  width: 100%;
+}
+
+h2 {
+  text-align: center;
+  display: block;
+  margin: auto;
+  color: white;
+  margin-top: 5px;
 }

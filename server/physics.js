@@ -13,7 +13,7 @@ const worldBoxBodies = [];
 const worldSensors = [];
 const worldSensorBodies = [];
 const circleColors = [];
-const numOfBalls = 48;
+const numOfBalls = 80;
 const maxVelocity = 600;
 const worldBuckets = [];
 const worldBucketBodies = [];
@@ -26,10 +26,7 @@ let circleBody;
 let mouseBody;
 let mouseConstraint;
 
-let redScore = 0;
-let blueScore = 0;
-let greenScore = 0;
-let yellowScore = 0;
+let scores = {redScore: 0, blueScore: 0, greenScore: 0, yellowScore: 0};
 
 const getDrawData = () => {
     // Clear the array
@@ -207,33 +204,36 @@ const createWorld = () => {
                             switch(circleDrawData[i].color) {
                                 case "blue":
                                     if (j == 0){
-                                        blueScore += 10;    
+                                        scores.blueScore += 10;    
                                     } else {
-                                        blueScore -= 10;    
+                                        scores.blueScore -= 10;    
                                     }
+                                    sockets.updateScore(scores);
                                     break;
                                 case "red":
                                     if (j == 1){
-                                        redScore += 10;    
+                                        scores.redScore += 10;    
                                     } else {
-                                        redScore -= 10;    
+                                        scores.redScore -= 10;    
                                     }
+                                    sockets.updateScore(scores);
                                     break;
                                 case "green":
                                     if (j == 2){
-                                        greenScore += 10;    
+                                        scores.greenScore += 10;    
                                     } else {
-                                        greenScore -= 10;    
+                                        scores.greenScore -= 10;    
                                     }
+                                    sockets.updateScore(scores);
                                     break;
                                 case "yellow":
                                     if (j == 3){
-                                        yellowScore += 10;    
+                                        scores.yellowScore += 10;    
                                     } else {
-                                        yellowScore -= 10;    
+                                        scores.yellowScore -= 10;    
                                     }
+                                    sockets.updateScore(scores);
                                     break;
-                                    
                             }
                             }
                         }

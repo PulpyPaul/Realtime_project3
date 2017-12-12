@@ -33,18 +33,21 @@
             <div class="collapsible-body"><span>Node.js, P2 physics, Materialize, Socket.io</span></div>
           </li>
       </ul>
-      <h5 class="blue-text">Click on a lobby to join a game</h5>
+      <h2 class="blue z-depth-3" id="scoreboard">Scoreboard</h2>
+      <div id="gameInfo">
+        <ul class="collection">
+            <li class="collection-item" id="blueScore">Blue Score: </li>
+            <li class="collection-item" id="redScore">Red Score: </li>
+            <li class="collection-item" id="greenScore">Green Score: </li>
+            <li class="collection-item" id="yellowScore">Yellow Score: </li>
+        </ul>
+      </div>
+      <h5 class="blue-text" id="lobbyText">Click on a lobby to join a game</h5>
       <div class="center-align">
         <a class="waves-effect waves-light btn blue buttons" id="room1">Lobby 1</a>
       </div>
+      
       <canvas id="myCanvas" height="800" width="900"></canvas>
-      <div id="gameInfo">
-        <h3>Scoreboard</h3>
-        <h4>Blue Score: <p id="blueScore">0</p></h4>
-        <h4>Red Score: <p id="redScore">0</p></h4>
-        <h4>Green Score: <p id="greenScore">0</p></h4>
-        <h4>Yellow Score: <p id="yellowScore">0</p></h4>
-      </div>
     </div>
   </body>
   <footer class="page-footer white">

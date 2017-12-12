@@ -62,8 +62,12 @@ const getMouse = () => {
     io.sockets.in("room1").emit('getMouse');    
 };
 
+const updateScore = (newScores) => {
+    io.sockets.in("room1").emit('updateScore', newScores);
+}
+
 module.exports.setupSockets = setupSockets;
 module.exports.updateData = updateData;
 module.exports.getMouse = getMouse;
 module.exports.players = players;
-
+module.exports.updateScore = updateScore;
