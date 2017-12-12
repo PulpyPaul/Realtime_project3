@@ -291,17 +291,6 @@ const updateMouse = (position, id) => {
   mouseBodies[id].position[1] = position[1];
 }
 
-const removeConstraint = (id) => {
-  world.removeConstraint(mouseConstraints[id]);
-  mouseConstraint = null;
-};
-
-const updateMouse = (position) => {
-  if (position[1] < 575) removeConstraint(id);
-  mouseBodies[id].position[0] = position[0];
-  mouseBodies[id].position[1] = position[1];
-};
-
 const createConstraint = (position, id) => {
   const hitObjects = world.hitTest(position, worldCircleBodies);
 
